@@ -11,9 +11,13 @@ import sudoku.exceptions.LogicException;
 public class NumberChecklist {
     // The indices of the Boolean list correspond with the number it represents
     // The initial list shows that all numbers 1-9 do not exist
-    Boolean[] numbers = {false, false, false, false, false, false, false, false, false};
+    private Boolean[] numbers = {false, false, false, false, false, false, false, false, false};
 
     public NumberChecklist() {}
+
+    public Boolean[] getNumbers() {
+        return numbers;
+    }
 
     /**
      * As the Solver looks through the row or col, it will mark the index representing the number
@@ -23,6 +27,10 @@ public class NumberChecklist {
      * @throws LogicException to be thrown if the number has already been marked as true
      */
     public void marksExists (int number) throws LogicException {
+        if (number == 0) {
+            return;
+        }
+
         int index = number - 1;
 
         if (!numbers[index]) {
@@ -35,17 +43,17 @@ public class NumberChecklist {
     public boolean missingOne() {
         int falseCount = 0;
 
-        for (Boolean number : numbers) {
-            if (!number) {
+        for (int i = 0; i < numbers.length; i++) {
+            if (!numbers[i]) {
                 falseCount++;
-            }
-
-            if (falseCount > 1) {
-                return false;
             }
         }
 
-        return true;
+        if (falseCount == 1) {
+            return true;
+        }
+
+        return false;
     }
 
     public int getMissingNum() {

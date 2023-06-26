@@ -16,11 +16,11 @@ import com.google.gson.*;
  */
 public class SudokuBoardFetcher {
 
-    JsonObject boardResponse;
-    JsonArray blank;
-    ArrayList<ArrayList<Integer>> blankBoard;
-    JsonArray solutions;
-    ArrayList<ArrayList<Integer>> solutionBoard;
+    private JsonObject boardResponse;
+    private JsonArray blank;
+    private ArrayList<ArrayList<Integer>> blankBoard;
+    private JsonArray solutions;
+    private ArrayList<ArrayList<Integer>> solutionBoard;
 
     // Initializer
     public SudokuBoardFetcher() {
@@ -70,7 +70,7 @@ public class SudokuBoardFetcher {
 
         this.blankBoard = JsonArrayToArrayList(blank);
 
-        System.out.println(blankBoard);
+        //System.out.println(blankBoard);
 
         return blankBoard;
     }
@@ -89,7 +89,7 @@ public class SudokuBoardFetcher {
 
         this.solutionBoard = JsonArrayToArrayList(solutions);
 
-        System.out.println(solutionBoard);
+        //System.out.println(solutionBoard);
 
         return solutionBoard;
     }

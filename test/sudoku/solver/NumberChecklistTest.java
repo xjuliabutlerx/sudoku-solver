@@ -2,32 +2,46 @@ package sudoku.solver;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import sudoku.exceptions.LogicException;
 
 class NumberChecklistTest {
 
+    NumberChecklist checklist;
+
+    @BeforeEach
+    void createNumberChecklist() {
+        checklist = new NumberChecklist();
+    }
+
     @Test
     void marksExists() throws LogicException {
-        NumberChecklist checklist = new NumberChecklist();
         checklist.marksExists(4);
         Assertions.assertArrayEquals(new Boolean[] {false, false, false,
-                                                true, false, false,
-                                                false, false, false},
-                                checklist.numbers);
+                                                    true, false, false,
+                                                    false, false, false},
+                                            checklist.getNumbers());
+    }
+
+    @Test
+    void marksZeroExistsNoError() throws LogicException {
+        checklist.marksExists(0);
+        Assertions.assertArrayEquals(new Boolean[] {false, false, false,
+                                                    false, false, false,
+                                                    false, false, false},
+                                            checklist.getNumbers());
     }
 
     @Test
     void marksExistsError() throws LogicException {
-        NumberChecklist checklist = new NumberChecklist();
         checklist.marksExists(4);
-        Assertions.assertEquals(checklist.numbers[3], true);
+        Assertions.assertEquals(checklist.getNumbers()[3], true);
         Assert.assertThrows(LogicException.class, () -> checklist.marksExists(4));
     }
 
     @Test
     void missingOneTrueA() throws LogicException {
-        NumberChecklist checklist = new NumberChecklist();
         for (int i = 0; i < 8; i++) {
             checklist.marksExists(i+1);
         }
@@ -37,7 +51,6 @@ class NumberChecklistTest {
 
     @Test
     void missingOneTrueB() throws LogicException {
-        NumberChecklist checklist = new NumberChecklist();
         for (int i = 1; i < 9; i++) {
             checklist.marksExists(i+1);
         }
@@ -47,7 +60,6 @@ class NumberChecklistTest {
 
     @Test
     void missingOneTrueC() throws LogicException {
-        NumberChecklist checklist = new NumberChecklist();
         for (int i = 0; i < 9; i++) {
             if (i != 4) {
                 checklist.marksExists(i+1);
@@ -59,7 +71,6 @@ class NumberChecklistTest {
 
     @Test
     void missingOneFalseA() throws LogicException {
-        NumberChecklist checklist = new NumberChecklist();
         for (int i = 0; i < 7; i++) {
             checklist.marksExists(i+1);
         }
@@ -69,7 +80,6 @@ class NumberChecklistTest {
 
     @Test
     void missingOneFalseB() throws LogicException {
-        NumberChecklist checklist = new NumberChecklist();
         for (int i = 2; i < 9; i++) {
             checklist.marksExists(i+1);
         }
@@ -79,7 +89,6 @@ class NumberChecklistTest {
 
     @Test
     void getMissingNumA() throws LogicException {
-        NumberChecklist checklist = new NumberChecklist();
         for (int i = 0; i < 8; i++) {
             checklist.marksExists(i+1);
         }
@@ -90,7 +99,6 @@ class NumberChecklistTest {
 
     @Test
     void getMissingNumB() throws LogicException {
-        NumberChecklist checklist = new NumberChecklist();
         for (int i = 1; i < 9; i++) {
             checklist.marksExists(i+1);
         }
@@ -101,7 +109,6 @@ class NumberChecklistTest {
 
     @Test
     void getMissingNumC() throws LogicException {
-        NumberChecklist checklist = new NumberChecklist();
         for (int i = 0; i < 9; i++) {
             if (i != 4) {
                 checklist.marksExists(i+1);
@@ -113,8 +120,17 @@ class NumberChecklistTest {
     }
 
     @Test
+    void getMissingNumButAllExist() throws LogicException {
+        for (int i = 0; i < 9; i++) {
+            checklist.marksExists(i+1);
+        }
+
+        Assertions.assertFalse(checklist.missingOne());
+        Assertions.assertEquals(0, checklist.getMissingNum());
+    }
+
+    @Test
     void reset() throws LogicException {
-        NumberChecklist checklist = new NumberChecklist();
         for (int i = 0; i < 9; i ++) {
             checklist.marksExists(i+1);
         }
@@ -124,6 +140,6 @@ class NumberChecklistTest {
         Assertions.assertArrayEquals(new Boolean[] {false, false, false,
                                                     false, false, false,
                                                     false, false, false},
-                                     checklist.numbers);
+                                     checklist.getNumbers());
     }
 }
