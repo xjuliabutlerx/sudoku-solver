@@ -25,7 +25,7 @@ public class NumberChecklist {
     public void marksExists (int number) throws LogicException {
         int index = number - 1;
 
-        if (numbers[index] == false) {
+        if (!numbers[index]) {
             numbers[index] = true;
         } else {
             throw new LogicException("The number already exists!");
@@ -35,8 +35,8 @@ public class NumberChecklist {
     public boolean missingOne() {
         int falseCount = 0;
 
-        for (int i = 0; i < numbers.length; i++) {
-            if (numbers[i] == false) {
+        for (Boolean number : numbers) {
+            if (!number) {
                 falseCount++;
             }
 
@@ -50,7 +50,7 @@ public class NumberChecklist {
 
     public int getMissingNum() {
         for (int i = 0; i < numbers.length; i++) {
-            if (numbers[i] == false) {
+            if (!numbers[i]) {
                 return (i+1);
             }
         }

@@ -11,7 +11,7 @@ class NumberChecklistTest {
     void marksExists() throws LogicException {
         NumberChecklist checklist = new NumberChecklist();
         checklist.marksExists(4);
-        Assert.assertArrayEquals(new Boolean[] {false, false, false,
+        Assertions.assertArrayEquals(new Boolean[] {false, false, false,
                                                 true, false, false,
                                                 false, false, false},
                                 checklist.numbers);
@@ -21,7 +21,7 @@ class NumberChecklistTest {
     void marksExistsError() throws LogicException {
         NumberChecklist checklist = new NumberChecklist();
         checklist.marksExists(4);
-        Assert.assertEquals(checklist.numbers[3], true);
+        Assertions.assertEquals(checklist.numbers[3], true);
         Assert.assertThrows(LogicException.class, () -> checklist.marksExists(4));
     }
 
@@ -32,7 +32,7 @@ class NumberChecklistTest {
             checklist.marksExists(i+1);
         }
 
-        Assert.assertEquals(true, checklist.missingOne());
+        Assertions.assertTrue(checklist.missingOne());
     }
 
     @Test
@@ -42,7 +42,7 @@ class NumberChecklistTest {
             checklist.marksExists(i+1);
         }
 
-        Assert.assertEquals(true, checklist.missingOne());
+        Assertions.assertTrue(checklist.missingOne());
     }
 
     @Test
@@ -54,7 +54,7 @@ class NumberChecklistTest {
             }
         }
 
-        Assert.assertEquals(true, checklist.missingOne());
+        Assertions.assertTrue(checklist.missingOne());
     }
 
     @Test
@@ -64,7 +64,7 @@ class NumberChecklistTest {
             checklist.marksExists(i+1);
         }
 
-        Assert.assertEquals(false, checklist.missingOne());
+        Assertions.assertFalse(checklist.missingOne());
     }
 
     @Test
@@ -74,7 +74,7 @@ class NumberChecklistTest {
             checklist.marksExists(i+1);
         }
 
-        Assert.assertEquals(false, checklist.missingOne());
+        Assertions.assertFalse(checklist.missingOne());
     }
 
     @Test
@@ -84,8 +84,8 @@ class NumberChecklistTest {
             checklist.marksExists(i+1);
         }
 
-        Assert.assertEquals(true, checklist.missingOne());
-        Assert.assertEquals(9, checklist.getMissingNum());
+        Assertions.assertTrue(checklist.missingOne());
+        Assertions.assertEquals(9, checklist.getMissingNum());
     }
 
     @Test
@@ -95,8 +95,8 @@ class NumberChecklistTest {
             checklist.marksExists(i+1);
         }
 
-        Assert.assertEquals(true, checklist.missingOne());
-        Assert.assertEquals(1, checklist.getMissingNum());
+        Assertions.assertTrue(checklist.missingOne());
+        Assertions.assertEquals(1, checklist.getMissingNum());
     }
 
     @Test
@@ -108,8 +108,8 @@ class NumberChecklistTest {
             }
         }
 
-        Assert.assertEquals(true, checklist.missingOne());
-        Assert.assertEquals(5, checklist.getMissingNum());
+        Assertions.assertTrue(checklist.missingOne());
+        Assertions.assertEquals(5, checklist.getMissingNum());
     }
 
     @Test

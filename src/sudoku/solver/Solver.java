@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Solver {
 
-    SudokuBoard board;
+    final SudokuBoard board;
 
     public Solver() {
         this.board = new SudokuBoard();

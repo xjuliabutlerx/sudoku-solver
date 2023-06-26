@@ -5,7 +5,7 @@ import javax.swing.*;
 
 public class MainPanel extends JFrame {
     JPanel panel;
-    JLabel label;
+    final JLabel label;
 
     public MainPanel(String title) {
         super(title);
