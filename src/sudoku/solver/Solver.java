@@ -22,12 +22,12 @@ public class Solver {
     }
 
     // For testing
-    public Solver(ArrayList<ArrayList<Integer>> blankBoard) {
+    public Solver(int[][] blankBoard) {
         this.board = new SudokuBoard();
         board.setBoard(blankBoard);
     }
 
-    public ArrayList<ArrayList<Integer>> getBoard() {
+    public int[][] getBoard() {
         return this.board.getBoard();
     }
 
@@ -36,9 +36,16 @@ public class Solver {
         checkMissingOne(false);
     }
 
+    /**
+     * This method checks each row or col to see if there's only one number missing.
+     * If there is, then it will go ahead and fill in the correct number.
+     *
+     * @param byRow (a boolean to indicate if the method should check by row [true] or
+     *              by col [false])
+     */
     public void checkMissingOne(boolean byRow) {
         NumberChecklist checklist = new NumberChecklist();
-        ArrayList<ArrayList<Integer>> auxBoard;
+        int[][] auxBoard;
 
         if (byRow) {
             auxBoard = board.getBoard();
@@ -49,17 +56,18 @@ public class Solver {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 try {
-                    checklist.marksExists(auxBoard.get(i).get(j));
+                    checklist.marksExists(auxBoard[i][j]);
                 } catch (LogicException e) {
                     e.printStackTrace();
                 }
             }
 
+            // If there's only one missing, then write the correct number in
             if (checklist.missingOne()) {
                 int num = checklist.getMissingNum();
 
                 for (int j = 0; j < 9; j ++) {
-                    if (auxBoard.get(i).get(j) == 0) {
+                    if (auxBoard[i][j] == 0) {
                         if (byRow) {
                             board.writeNumber(num, i, j);
                         } else {
@@ -74,13 +82,13 @@ public class Solver {
         }
     }
 
-    // 1st horizontal third: Rows 0-2
-    // 2nd hor. third: Rows 3-5
-    // 3rd hor. third: Rows 6-8
-    // 1st vertical third: Cols 0-2
-    // 2nd vert. third: Cols 3-5
-    // 3rd vert. third: Cols 6-8
-    public void checkThirds() {
+    // 1st horizontal block: Rows 0-2
+    // 2nd hor. block: Rows 3-5
+    // 3rd hor. block: Rows 6-8
+    // 1st vertical block: Cols 0-2
+    // 2nd vert. block: Cols 3-5
+    // 3rd vert. block: Cols 6-8
+    public void checkBlocks() {
 
     }
 
@@ -88,7 +96,7 @@ public class Solver {
     public boolean isSolved() {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                if (board.getCell(i, j) != board.getSolution().get(i).get(j)) {
+                if (board.getCell(i, j) != board.getSolution()[i][j]) {
                     return false;
                 }
             }

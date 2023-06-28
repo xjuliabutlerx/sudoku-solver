@@ -18,7 +18,7 @@ class NumberChecklistTest {
     @Test
     void marksExists() throws LogicException {
         checklist.marksExists(4);
-        Assertions.assertArrayEquals(new Boolean[] {false, false, false,
+        Assertions.assertArrayEquals(new boolean[] {false, false, false,
                                                     true, false, false,
                                                     false, false, false},
                                             checklist.getNumbers());
@@ -27,7 +27,7 @@ class NumberChecklistTest {
     @Test
     void marksZeroExistsNoError() throws LogicException {
         checklist.marksExists(0);
-        Assertions.assertArrayEquals(new Boolean[] {false, false, false,
+        Assertions.assertArrayEquals(new boolean[] {false, false, false,
                                                     false, false, false,
                                                     false, false, false},
                                             checklist.getNumbers());
@@ -137,7 +137,7 @@ class NumberChecklistTest {
 
         checklist.reset();
 
-        Assertions.assertArrayEquals(new Boolean[] {false, false, false,
+        Assertions.assertArrayEquals(new boolean[] {false, false, false,
                                                     false, false, false,
                                                     false, false, false},
                                      checklist.getNumbers());

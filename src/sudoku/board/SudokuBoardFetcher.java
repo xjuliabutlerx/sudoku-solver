@@ -4,9 +4,10 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
 
 import com.google.gson.*;
+
+import static java.util.Arrays.*;
 
 /**
  * @author juliabutler
@@ -17,10 +18,6 @@ import com.google.gson.*;
 public class SudokuBoardFetcher {
 
     private JsonObject boardResponse;
-    private JsonArray blank;
-    private ArrayList<ArrayList<Integer>> blankBoard;
-    private JsonArray solutions;
-    private ArrayList<ArrayList<Integer>> solutionBoard;
 
     // Initializer
     public SudokuBoardFetcher() {
@@ -55,39 +52,35 @@ public class SudokuBoardFetcher {
     }
 
     /**
-     * getBlankBoard will locate the blank Sudoku sudoku.board in the JSON response
-     * and return it as an ArrayList to its callee
+     * getBlankBoard will locate the blank Sudoku sudoku board in the JSON response
+     * and return it as a 2D list to its callee
      *
-     * @return the blank Sudoku sudoku.board
+     * @return the blank Sudoku board
      */
-    public ArrayList<ArrayList<Integer>> getBlankBoard() {
-        this.blank = boardResponse.getAsJsonObject("newboard")
+    public int[][] getBlankBoard() {
+        JsonArray blank = boardResponse.getAsJsonObject("newboard")
                             .getAsJsonArray("grids")
                             .get(0).getAsJsonObject()
                             .get("value").getAsJsonArray();
 
-        //System.out.println(sudoku.board);
-
-        this.blankBoard = JsonArrayToArrayList(blank);
-
-        //System.out.println(blankBoard);
+        int[][] blankBoard = JsonArrayTo2DList(blank);
 
         return blankBoard;
     }
 
     /**
-     * getSolution method will locate the blank Sudoku sudoku.board in the JSON response
-     * and return it as an ArrayList to its callee
+     * getSolution will locate the solution to the Sudoku board in the JSON response
+     * and return it as a 2D list to its callee
      *
-     * @return the solved Sudoku sudoku.board
+     * @return the solution to the Sudoku
      */
-    public ArrayList<ArrayList<Integer>> getSolution() {
-        this.solutions = boardResponse.getAsJsonObject("newboard")
-                .getAsJsonArray("grids")
-                .get(0).getAsJsonObject()
-                .get("solution").getAsJsonArray();
+    public int[][] getSolution() {
+        JsonArray solutions = boardResponse.getAsJsonObject("newboard")
+                            .getAsJsonArray("grids")
+                            .get(0).getAsJsonObject()
+                            .get("solution").getAsJsonArray();
 
-        this.solutionBoard = JsonArrayToArrayList(solutions);
+        int[][] solutionBoard = JsonArrayTo2DList(solutions);
 
         //System.out.println(solutionBoard);
 
@@ -109,25 +102,21 @@ public class SudokuBoardFetcher {
 
     /**
      * This private method JsonArrayToArrayList takes a JsonArray object as a
-     * parameter and will convert it to a 2D integer array
+     * parameter and will convert it to a 2D integer list
      *
      * @param board as a JsonArray
-     * @return the sudoku.board as an ArrayList
+     * @return the sudoku board as a 2D list
      */
-    private ArrayList<ArrayList<Integer>> JsonArrayToArrayList(JsonArray board) {
-        ArrayList<ArrayList<Integer>> resultBoard = new ArrayList<ArrayList<Integer>>();
-        ArrayList<Integer> aux = new ArrayList<Integer>();
+    private int[][] JsonArrayTo2DList(JsonArray board) {
+        int[][] resultBoard = new int[9][9];
 
-        // Since I'm working in the context of a general Sudoku sudoku.board
-        // I used 9 as the parameter for row and col length
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                aux.add(board.get(i).getAsJsonArray().get(j).getAsInt());
+                resultBoard[i][j] = board.get(i).getAsJsonArray().get(j).getAsInt();
             }
-            //System.out.println(aux);
-            resultBoard.add((ArrayList<Integer>) aux.clone());
-            aux.clear();
         }
+
+        //System.out.println(deepToString(resultBoard));
 
         return resultBoard;
     }

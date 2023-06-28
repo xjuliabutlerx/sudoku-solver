@@ -11,11 +11,11 @@ import sudoku.exceptions.LogicException;
 public class NumberChecklist {
     // The indices of the Boolean list correspond with the number it represents
     // The initial list shows that all numbers 1-9 do not exist
-    private Boolean[] numbers = {false, false, false, false, false, false, false, false, false};
+    private boolean[] numbers = {false, false, false, false, false, false, false, false, false};
 
     public NumberChecklist() {}
 
-    public Boolean[] getNumbers() {
+    public boolean[] getNumbers() {
         return numbers;
     }
 
@@ -66,6 +66,6 @@ public class NumberChecklist {
     }
 
     public void reset() {
-        numbers = new Boolean[] {false, false, false, false, false, false, false, false, false};
+        numbers = new boolean[] {false, false, false, false, false, false, false, false, false};
     }
 }
