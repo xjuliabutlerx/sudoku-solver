@@ -64,6 +64,65 @@ public class SudokuBoard {
     }
 
     /**
+     * This method will take the cell's row and col and will return the id for the block the cell is in, as follows:
+     *
+     * Block 1 - Rows 0-2, Cols 0-2 (top left block)
+     * Block 2 - Rows 0-2, Cols 3-5
+     * Block 3 - Rows 0-2, Cols 6-8 (top right block)
+     * Block 4 - Rows 3-5, Cols 0-2
+     * Block 5 - Rows 3-5, Cols 3-5 (center block)
+     * Block 6 - Rows 3-5, Cols 6-8
+     * Block 7 - Rows 6-8, Cols 0-2 (bottom left block)
+     * Block 8 - Rows 6-8, Cols 3-5
+     * Block 9 - Rows 6-8, Cols 6-8 (bottom right block)
+     *
+     * @param row
+     * @param col
+     * @return blockId
+     */
+    public int getBlockId(int row, int col) {
+        if (row < 0 || row > 8 || col < 0 || col > 8) {
+            return 0;
+        }
+
+        // Rows 0-2
+        if (row >= 0 && row <= 2) {
+
+            if (col >= 0 && col <= 2) {
+                return 1;
+            } else if (col >= 3 && col <= 5) {
+                return 2;
+            } else if (col >= 6 && col <= 8) {
+                return 3;
+            }
+
+        // Rows 3-5
+        } else if (3 <= row && row <= 5) {
+
+            if (col >= 0 && col <= 2) {
+                return 4;
+            } else if (col >= 3 && col <= 5) {
+                return 5;
+            } else if (col >= 6 && col <= 8) {
+                return 6;
+            }
+
+        } else if (6 <= row && row <= 8) {
+
+            if (col >= 0 && col <= 2) {
+                return 7;
+            } else if (col >= 3 && col <= 5) {
+                return 8;
+            } else if (col >= 6 && col <= 8) {
+                return 9;
+            }
+
+        }
+
+        return 0;
+    }
+
+    /**
      * This method will return a particular row of the Sudoku board. The rows have ids from 0-8.
      * The top row is 0 and the bottom row is 8.
      *
@@ -187,6 +246,65 @@ public class SudokuBoard {
         return block;
     }
 
+    /**
+     * numInRow indicates if a particular number is in a specified row
+     *
+     * @param rowId
+     * @param num
+     * @return true/false
+     */
+    public boolean numInRow(int rowId, int num) {
+        int[] row = getRowById(rowId);
+
+        for (int i = 0; i < 9; i++) {
+            if (row[i] == num) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * numInCol indicates if a particular number is in a specified col
+     *
+     * @param colId
+     * @param num
+     * @return true/false
+     */
+    public boolean numInCol(int colId, int num) {
+        int[] col = getColById(colId);
+
+        for (int i = 0; i < 9; i++) {
+            if (col[i] == num) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * numInBlock indicates if a particular number is in a specified block
+     *
+     * @param blockId
+     * @param num
+     * @return true/false
+     */
+    public boolean numInBlock(int blockId, int num) {
+        int[][] block = getBlockById(blockId);
+
+        for (int r = 0; r < 3; r++) {
+            for (int c = 0; c < 3; c++) {
+                if (block[r][c] == num) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public boolean writeNumber(int num, int row, int col) {
         if (num < 1 || num > 9 ||
             row < 0 || row > 8 ||
@@ -199,7 +317,6 @@ public class SudokuBoard {
         return true;
     }
 
-    // TODO refactor this for int[][]
     @Override
     public String toString() {
         String output = "";

@@ -7,8 +7,6 @@ import java.net.http.HttpResponse;
 
 import com.google.gson.*;
 
-import static java.util.Arrays.*;
-
 /**
  * @author juliabutler
  *
@@ -35,6 +33,9 @@ public class SudokuBoardFetcher {
      * @throws Exception
      */
     private void getGame() throws Exception {
+
+        // Link to API's website: https://sudoku-api.vercel.app/
+
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://sudoku-api.vercel.app/api/dosuku"))

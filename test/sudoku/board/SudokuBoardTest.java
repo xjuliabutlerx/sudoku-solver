@@ -412,4 +412,449 @@ class SudokuBoardTest {
         Assertions.assertNull(board.getBlockById(-10));
     }
 
+    @Test
+    void getValidBlockId1() {
+        SudokuBoard board = new SudokuBoard();
+
+        int[][] blankBoard = new int[9][9];
+
+        blankBoard[0] = new int[] {8, 0, 7, 1, 0, 4, 3, 9, 6};
+        blankBoard[1] = new int[] {9, 6, 5, 3, 2, 7, 1, 4, 8};
+        blankBoard[2] = new int[] {3, 4, 1, 6, 8, 9, 0, 5, 2};
+
+        blankBoard[3] = new int[] {5, 9, 0, 0, 6, 8, 2, 7, 1};
+        blankBoard[4] = new int[] {4, 7, 2, 5, 1, 3, 6, 0, 0};
+        blankBoard[5] = new int[] {6, 1, 8, 9, 7, 2, 4, 3, 5};
+
+        blankBoard[6] = new int[] {7, 8, 6, 2, 3, 5, 9, 1, 4};
+        blankBoard[7] = new int[] {0, 5, 4, 7, 9, 0, 8, 2, 3};
+        blankBoard[8] = new int[] {2, 3, 9, 8, 4, 1, 5, 6, 7};
+
+        board.setBoard(blankBoard);
+
+        Assertions.assertEquals(1, board.getBlockId(0, 0));
+        Assertions.assertEquals(1, board.getBlockId(1, 1));
+        Assertions.assertEquals(1, board.getBlockId(2, 2));
+        Assertions.assertEquals(1, board.getBlockId(0, 2));
+        Assertions.assertEquals(1, board.getBlockId(2, 0));
+    }
+
+    @Test
+    void getValidBlockId2() {
+        SudokuBoard board = new SudokuBoard();
+
+        int[][] blankBoard = new int[9][9];
+
+        blankBoard[0] = new int[] {8, 0, 7, 1, 0, 4, 3, 9, 6};
+        blankBoard[1] = new int[] {9, 6, 5, 3, 2, 7, 1, 4, 8};
+        blankBoard[2] = new int[] {3, 4, 1, 6, 8, 9, 0, 5, 2};
+
+        blankBoard[3] = new int[] {5, 9, 0, 0, 6, 8, 2, 7, 1};
+        blankBoard[4] = new int[] {4, 7, 2, 5, 1, 3, 6, 0, 0};
+        blankBoard[5] = new int[] {6, 1, 8, 9, 7, 2, 4, 3, 5};
+
+        blankBoard[6] = new int[] {7, 8, 6, 2, 3, 5, 9, 1, 4};
+        blankBoard[7] = new int[] {0, 5, 4, 7, 9, 0, 8, 2, 3};
+        blankBoard[8] = new int[] {2, 3, 9, 8, 4, 1, 5, 6, 7};
+
+        board.setBoard(blankBoard);
+
+        Assertions.assertEquals(2, board.getBlockId(0, 3));
+        Assertions.assertEquals(2, board.getBlockId(1, 4));
+        Assertions.assertEquals(2, board.getBlockId(2, 5));
+        Assertions.assertEquals(2, board.getBlockId(0, 5));
+        Assertions.assertEquals(2, board.getBlockId(2, 3));
+    }
+
+    @Test
+    void getValidBlockId3() {
+        SudokuBoard board = new SudokuBoard();
+
+        int[][] blankBoard = new int[9][9];
+
+        blankBoard[0] = new int[] {8, 0, 7, 1, 0, 4, 3, 9, 6};
+        blankBoard[1] = new int[] {9, 6, 5, 3, 2, 7, 1, 4, 8};
+        blankBoard[2] = new int[] {3, 4, 1, 6, 8, 9, 0, 5, 2};
+
+        blankBoard[3] = new int[] {5, 9, 0, 0, 6, 8, 2, 7, 1};
+        blankBoard[4] = new int[] {4, 7, 2, 5, 1, 3, 6, 0, 0};
+        blankBoard[5] = new int[] {6, 1, 8, 9, 7, 2, 4, 3, 5};
+
+        blankBoard[6] = new int[] {7, 8, 6, 2, 3, 5, 9, 1, 4};
+        blankBoard[7] = new int[] {0, 5, 4, 7, 9, 0, 8, 2, 3};
+        blankBoard[8] = new int[] {2, 3, 9, 8, 4, 1, 5, 6, 7};
+
+        board.setBoard(blankBoard);
+
+        Assertions.assertEquals(3, board.getBlockId(0, 6));
+        Assertions.assertEquals(3, board.getBlockId(1, 7));
+        Assertions.assertEquals(3, board.getBlockId(2, 8));
+        Assertions.assertEquals(3, board.getBlockId(0, 8));
+        Assertions.assertEquals(3, board.getBlockId(2, 6));
+    }
+
+    @Test
+    void getValidBlockId4() {
+        SudokuBoard board = new SudokuBoard();
+
+        int[][] blankBoard = new int[9][9];
+
+        blankBoard[0] = new int[] {8, 0, 7, 1, 0, 4, 3, 9, 6};
+        blankBoard[1] = new int[] {9, 6, 5, 3, 2, 7, 1, 4, 8};
+        blankBoard[2] = new int[] {3, 4, 1, 6, 8, 9, 0, 5, 2};
+
+        blankBoard[3] = new int[] {5, 9, 0, 0, 6, 8, 2, 7, 1};
+        blankBoard[4] = new int[] {4, 7, 2, 5, 1, 3, 6, 0, 0};
+        blankBoard[5] = new int[] {6, 1, 8, 9, 7, 2, 4, 3, 5};
+
+        blankBoard[6] = new int[] {7, 8, 6, 2, 3, 5, 9, 1, 4};
+        blankBoard[7] = new int[] {0, 5, 4, 7, 9, 0, 8, 2, 3};
+        blankBoard[8] = new int[] {2, 3, 9, 8, 4, 1, 5, 6, 7};
+
+        board.setBoard(blankBoard);
+
+        Assertions.assertEquals(4, board.getBlockId(3, 0));
+        Assertions.assertEquals(4, board.getBlockId(4, 1));
+        Assertions.assertEquals(4, board.getBlockId(5, 2));
+        Assertions.assertEquals(4, board.getBlockId(3, 2));
+        Assertions.assertEquals(4, board.getBlockId(5, 0));
+    }
+
+    @Test
+    void getValidBlockId5() {
+        SudokuBoard board = new SudokuBoard();
+
+        int[][] blankBoard = new int[9][9];
+
+        blankBoard[0] = new int[] {8, 0, 7, 1, 0, 4, 3, 9, 6};
+        blankBoard[1] = new int[] {9, 6, 5, 3, 2, 7, 1, 4, 8};
+        blankBoard[2] = new int[] {3, 4, 1, 6, 8, 9, 0, 5, 2};
+
+        blankBoard[3] = new int[] {5, 9, 0, 0, 6, 8, 2, 7, 1};
+        blankBoard[4] = new int[] {4, 7, 2, 5, 1, 3, 6, 0, 0};
+        blankBoard[5] = new int[] {6, 1, 8, 9, 7, 2, 4, 3, 5};
+
+        blankBoard[6] = new int[] {7, 8, 6, 2, 3, 5, 9, 1, 4};
+        blankBoard[7] = new int[] {0, 5, 4, 7, 9, 0, 8, 2, 3};
+        blankBoard[8] = new int[] {2, 3, 9, 8, 4, 1, 5, 6, 7};
+
+        board.setBoard(blankBoard);
+
+        Assertions.assertEquals(5, board.getBlockId(3, 3));
+        Assertions.assertEquals(5, board.getBlockId(4, 4));
+        Assertions.assertEquals(5, board.getBlockId(5, 5));
+        Assertions.assertEquals(5, board.getBlockId(3, 5));
+        Assertions.assertEquals(5, board.getBlockId(5, 3));
+    }
+
+    @Test
+    void getValidBlockId6() {
+        SudokuBoard board = new SudokuBoard();
+
+        int[][] blankBoard = new int[9][9];
+
+        blankBoard[0] = new int[] {8, 0, 7, 1, 0, 4, 3, 9, 6};
+        blankBoard[1] = new int[] {9, 6, 5, 3, 2, 7, 1, 4, 8};
+        blankBoard[2] = new int[] {3, 4, 1, 6, 8, 9, 0, 5, 2};
+
+        blankBoard[3] = new int[] {5, 9, 0, 0, 6, 8, 2, 7, 1};
+        blankBoard[4] = new int[] {4, 7, 2, 5, 1, 3, 6, 0, 0};
+        blankBoard[5] = new int[] {6, 1, 8, 9, 7, 2, 4, 3, 5};
+
+        blankBoard[6] = new int[] {7, 8, 6, 2, 3, 5, 9, 1, 4};
+        blankBoard[7] = new int[] {0, 5, 4, 7, 9, 0, 8, 2, 3};
+        blankBoard[8] = new int[] {2, 3, 9, 8, 4, 1, 5, 6, 7};
+
+        board.setBoard(blankBoard);
+
+        Assertions.assertEquals(6, board.getBlockId(3, 6));
+        Assertions.assertEquals(6, board.getBlockId(4, 7));
+        Assertions.assertEquals(6, board.getBlockId(5, 8));
+        Assertions.assertEquals(6, board.getBlockId(3, 8));
+        Assertions.assertEquals(6, board.getBlockId(5, 6));
+    }
+
+    @Test
+    void getValidBlockId7() {
+        SudokuBoard board = new SudokuBoard();
+
+        int[][] blankBoard = new int[9][9];
+
+        blankBoard[0] = new int[] {8, 0, 7, 1, 0, 4, 3, 9, 6};
+        blankBoard[1] = new int[] {9, 6, 5, 3, 2, 7, 1, 4, 8};
+        blankBoard[2] = new int[] {3, 4, 1, 6, 8, 9, 0, 5, 2};
+
+        blankBoard[3] = new int[] {5, 9, 0, 0, 6, 8, 2, 7, 1};
+        blankBoard[4] = new int[] {4, 7, 2, 5, 1, 3, 6, 0, 0};
+        blankBoard[5] = new int[] {6, 1, 8, 9, 7, 2, 4, 3, 5};
+
+        blankBoard[6] = new int[] {7, 8, 6, 2, 3, 5, 9, 1, 4};
+        blankBoard[7] = new int[] {0, 5, 4, 7, 9, 0, 8, 2, 3};
+        blankBoard[8] = new int[] {2, 3, 9, 8, 4, 1, 5, 6, 7};
+
+        board.setBoard(blankBoard);
+
+        Assertions.assertEquals(7, board.getBlockId(6, 0));
+        Assertions.assertEquals(7, board.getBlockId(7, 1));
+        Assertions.assertEquals(7, board.getBlockId(8, 2));
+        Assertions.assertEquals(7, board.getBlockId(6, 2));
+        Assertions.assertEquals(7, board.getBlockId(8, 0));
+    }
+
+    @Test
+    void getValidBlockId8() {
+        SudokuBoard board = new SudokuBoard();
+
+        int[][] blankBoard = new int[9][9];
+
+        blankBoard[0] = new int[] {8, 0, 7, 1, 0, 4, 3, 9, 6};
+        blankBoard[1] = new int[] {9, 6, 5, 3, 2, 7, 1, 4, 8};
+        blankBoard[2] = new int[] {3, 4, 1, 6, 8, 9, 0, 5, 2};
+
+        blankBoard[3] = new int[] {5, 9, 0, 0, 6, 8, 2, 7, 1};
+        blankBoard[4] = new int[] {4, 7, 2, 5, 1, 3, 6, 0, 0};
+        blankBoard[5] = new int[] {6, 1, 8, 9, 7, 2, 4, 3, 5};
+
+        blankBoard[6] = new int[] {7, 8, 6, 2, 3, 5, 9, 1, 4};
+        blankBoard[7] = new int[] {0, 5, 4, 7, 9, 0, 8, 2, 3};
+        blankBoard[8] = new int[] {2, 3, 9, 8, 4, 1, 5, 6, 7};
+
+        board.setBoard(blankBoard);
+
+        Assertions.assertEquals(8, board.getBlockId(6, 3));
+        Assertions.assertEquals(8, board.getBlockId(7, 4));
+        Assertions.assertEquals(8, board.getBlockId(8, 5));
+        Assertions.assertEquals(8, board.getBlockId(6, 5));
+        Assertions.assertEquals(8, board.getBlockId(8, 3));
+    }
+
+    @Test
+    void getValidBlockId9() {
+        SudokuBoard board = new SudokuBoard();
+
+        int[][] blankBoard = new int[9][9];
+
+        blankBoard[0] = new int[] {8, 0, 7, 1, 0, 4, 3, 9, 6};
+        blankBoard[1] = new int[] {9, 6, 5, 3, 2, 7, 1, 4, 8};
+        blankBoard[2] = new int[] {3, 4, 1, 6, 8, 9, 0, 5, 2};
+
+        blankBoard[3] = new int[] {5, 9, 0, 0, 6, 8, 2, 7, 1};
+        blankBoard[4] = new int[] {4, 7, 2, 5, 1, 3, 6, 0, 0};
+        blankBoard[5] = new int[] {6, 1, 8, 9, 7, 2, 4, 3, 5};
+
+        blankBoard[6] = new int[] {7, 8, 6, 2, 3, 5, 9, 1, 4};
+        blankBoard[7] = new int[] {0, 5, 4, 7, 9, 0, 8, 2, 3};
+        blankBoard[8] = new int[] {2, 3, 9, 8, 4, 1, 5, 6, 7};
+
+        board.setBoard(blankBoard);
+
+        Assertions.assertEquals(9, board.getBlockId(6, 6));
+        Assertions.assertEquals(9, board.getBlockId(7, 7));
+        Assertions.assertEquals(9, board.getBlockId(8, 8));
+        Assertions.assertEquals(9, board.getBlockId(6, 8));
+        Assertions.assertEquals(9, board.getBlockId(8, 6));
+    }
+
+    @Test
+    void getInvalidBlockId() {
+        SudokuBoard board = new SudokuBoard();
+
+        int[][] blankBoard = new int[9][9];
+
+        blankBoard[0] = new int[] {8, 0, 7, 1, 0, 4, 3, 9, 6};
+        blankBoard[1] = new int[] {9, 6, 5, 3, 2, 7, 1, 4, 8};
+        blankBoard[2] = new int[] {3, 4, 1, 6, 8, 9, 0, 5, 2};
+
+        blankBoard[3] = new int[] {5, 9, 0, 0, 6, 8, 2, 7, 1};
+        blankBoard[4] = new int[] {4, 7, 2, 5, 1, 3, 6, 0, 0};
+        blankBoard[5] = new int[] {6, 1, 8, 9, 7, 2, 4, 3, 5};
+
+        blankBoard[6] = new int[] {7, 8, 6, 2, 3, 5, 9, 1, 4};
+        blankBoard[7] = new int[] {0, 5, 4, 7, 9, 0, 8, 2, 3};
+        blankBoard[8] = new int[] {2, 3, 9, 8, 4, 1, 5, 6, 7};
+
+        board.setBoard(blankBoard);
+
+        Assertions.assertEquals(0, board.getBlockId(-1, 0));
+        Assertions.assertEquals(0, board.getBlockId(0, -1));
+        Assertions.assertEquals(0, board.getBlockId(9, 2));
+        Assertions.assertEquals(0, board.getBlockId(3, 11));
+    }
+
+    @Test
+    void isNumInRowTrue() {
+        SudokuBoard board = new SudokuBoard();
+
+        int[][] blankBoard = new int[9][9];
+
+        blankBoard[0] = new int[] {8, 2, 7, 1, 5, 4, 3, 9, 6};
+        blankBoard[1] = new int[] {9, 6, 5, 3, 2, 7, 1, 4, 8};
+        blankBoard[2] = new int[] {3, 4, 1, 6, 8, 9, 7, 5, 2};
+        blankBoard[3] = new int[] {5, 9, 3, 4, 6, 8, 2, 7, 1};
+        blankBoard[4] = new int[] {4, 7, 2, 5, 1, 3, 6, 8, 9};
+        blankBoard[5] = new int[] {6, 1, 8, 9, 7, 2, 4, 3, 5};
+        blankBoard[6] = new int[] {7, 8, 6, 2, 3, 5, 9, 1, 4};
+        blankBoard[7] = new int[] {1, 5, 4, 7, 9, 6, 8, 2, 3};
+        blankBoard[8] = new int[] {2, 3, 9, 8, 4, 1, 5, 6, 7};
+
+        board.setBoard(blankBoard);
+
+        Assertions.assertTrue(board.numInRow(0, 1));
+        Assertions.assertTrue(board.numInRow(1, 2));
+        Assertions.assertTrue(board.numInRow(2, 3));
+        Assertions.assertTrue(board.numInRow(3, 4));
+        Assertions.assertTrue(board.numInRow(4, 5));
+        Assertions.assertTrue(board.numInRow(5, 6));
+        Assertions.assertTrue(board.numInRow(6, 7));
+        Assertions.assertTrue(board.numInRow(7, 8));
+        Assertions.assertTrue(board.numInRow(8, 9));
+    }
+
+    @Test
+    void isNumInRowFalse() {
+        SudokuBoard board = new SudokuBoard();
+
+        int[][] blankBoard = new int[9][9];
+
+        blankBoard[0] = new int[] {8, 2, 7, 1, 5, 4, 3, 0, 6};
+        blankBoard[1] = new int[] {9, 6, 5, 3, 2, 7, 1, 4, 0};
+        blankBoard[2] = new int[] {3, 4, 1, 6, 8, 9, 0, 5, 2};
+        blankBoard[3] = new int[] {5, 9, 3, 4, 0, 8, 2, 7, 1};
+        blankBoard[4] = new int[] {4, 7, 2, 0, 1, 3, 6, 8, 9};
+        blankBoard[5] = new int[] {6, 1, 8, 9, 7, 2, 0, 3, 5};
+        blankBoard[6] = new int[] {7, 8, 6, 2, 0, 5, 9, 1, 4};
+        blankBoard[7] = new int[] {1, 5, 4, 7, 9, 6, 8, 0, 3};
+        blankBoard[8] = new int[] {2, 3, 9, 8, 4, 0, 5, 6, 7};
+
+        board.setBoard(blankBoard);
+
+        Assertions.assertFalse(board.numInRow(0, 9));
+        Assertions.assertFalse(board.numInRow(1, 8));
+        Assertions.assertFalse(board.numInRow(2, 7));
+        Assertions.assertFalse(board.numInRow(3, 6));
+        Assertions.assertFalse(board.numInRow(4, 5));
+        Assertions.assertFalse(board.numInRow(5, 4));
+        Assertions.assertFalse(board.numInRow(6, 3));
+        Assertions.assertFalse(board.numInRow(7, 2));
+        Assertions.assertFalse(board.numInRow(8, 1));
+    }
+
+    @Test
+    void isNumInColTrue() {
+        SudokuBoard board = new SudokuBoard();
+
+        int[][] blankBoard = new int[9][9];
+
+        blankBoard[0] = new int[] {8, 2, 7, 1, 5, 4, 3, 9, 6};
+        blankBoard[1] = new int[] {9, 6, 5, 3, 2, 7, 1, 4, 8};
+        blankBoard[2] = new int[] {3, 4, 1, 6, 8, 9, 7, 5, 2};
+        blankBoard[3] = new int[] {5, 9, 3, 4, 6, 8, 2, 7, 1};
+        blankBoard[4] = new int[] {4, 7, 2, 5, 1, 3, 6, 8, 9};
+        blankBoard[5] = new int[] {6, 1, 8, 9, 7, 2, 4, 3, 5};
+        blankBoard[6] = new int[] {7, 8, 6, 2, 3, 5, 9, 1, 4};
+        blankBoard[7] = new int[] {1, 5, 4, 7, 9, 6, 8, 2, 3};
+        blankBoard[8] = new int[] {2, 3, 9, 8, 4, 1, 5, 6, 7};
+
+        board.setBoard(blankBoard);
+
+        Assertions.assertTrue(board.numInCol(0, 1));
+        Assertions.assertTrue(board.numInCol(1, 2));
+        Assertions.assertTrue(board.numInCol(2, 3));
+        Assertions.assertTrue(board.numInCol(3, 4));
+        Assertions.assertTrue(board.numInCol(4, 5));
+        Assertions.assertTrue(board.numInCol(5, 6));
+        Assertions.assertTrue(board.numInCol(6, 7));
+        Assertions.assertTrue(board.numInCol(7, 8));
+        Assertions.assertTrue(board.numInCol(8, 9));
+    }
+
+    @Test
+    void isNumInColFalse() {
+        SudokuBoard board = new SudokuBoard();
+
+        int[][] blankBoard = new int[9][9];
+
+        blankBoard[0] = new int[] {8, 0, 7, 1, 0, 4, 3, 9, 6};
+        blankBoard[1] = new int[] {9, 6, 5, 3, 2, 7, 1, 4, 8};
+        blankBoard[2] = new int[] {3, 4, 1, 6, 8, 9, 0, 5, 2};
+        blankBoard[3] = new int[] {5, 9, 0, 0, 6, 8, 2, 7, 1};
+        blankBoard[4] = new int[] {4, 7, 2, 5, 1, 3, 6, 0, 0};
+        blankBoard[5] = new int[] {6, 1, 8, 9, 7, 2, 4, 3, 5};
+        blankBoard[6] = new int[] {7, 8, 6, 2, 3, 5, 9, 1, 4};
+        blankBoard[7] = new int[] {0, 5, 4, 7, 9, 0, 8, 2, 3};
+        blankBoard[8] = new int[] {2, 3, 9, 8, 4, 1, 5, 6, 7};
+
+        board.setBoard(blankBoard);
+
+        Assertions.assertFalse(board.numInCol(0, 1));
+        Assertions.assertFalse(board.numInCol(1, 2));
+        Assertions.assertFalse(board.numInCol(2, 3));
+        Assertions.assertFalse(board.numInCol(3, 4));
+        Assertions.assertFalse(board.numInCol(4, 5));
+        Assertions.assertFalse(board.numInCol(5, 6));
+        Assertions.assertFalse(board.numInCol(6, 7));
+        Assertions.assertFalse(board.numInCol(7, 8));
+        Assertions.assertFalse(board.numInCol(8, 9));
+    }
+
+    @Test
+    void isNumInBlockTrue() {
+        SudokuBoard board = new SudokuBoard();
+
+        int[][] blankBoard = new int[9][9];
+
+        blankBoard[0] = new int[] {8, 2, 7, 1, 5, 4, 3, 9, 6};
+        blankBoard[1] = new int[] {9, 6, 5, 3, 2, 7, 1, 4, 8};
+        blankBoard[2] = new int[] {3, 4, 1, 6, 8, 9, 7, 5, 2};
+        blankBoard[3] = new int[] {5, 9, 3, 4, 6, 8, 2, 7, 1};
+        blankBoard[4] = new int[] {4, 7, 2, 5, 1, 3, 6, 8, 9};
+        blankBoard[5] = new int[] {6, 1, 8, 9, 7, 2, 4, 3, 5};
+        blankBoard[6] = new int[] {7, 8, 6, 2, 3, 5, 9, 1, 4};
+        blankBoard[7] = new int[] {1, 5, 4, 7, 9, 6, 8, 2, 3};
+        blankBoard[8] = new int[] {2, 3, 9, 8, 4, 1, 5, 6, 7};
+
+        board.setBoard(blankBoard);
+
+        Assertions.assertTrue(board.numInBlock(1, 9));
+        Assertions.assertTrue(board.numInBlock(2, 8));
+        Assertions.assertTrue(board.numInBlock(3, 7));
+        Assertions.assertTrue(board.numInBlock(4, 6));
+        Assertions.assertTrue(board.numInBlock(5, 5));
+        Assertions.assertTrue(board.numInBlock(6, 4));
+        Assertions.assertTrue(board.numInBlock(7, 3));
+        Assertions.assertTrue(board.numInBlock(8, 2));
+        Assertions.assertTrue(board.numInBlock(9, 1));
+    }
+
+    @Test
+    void isNumInBlockFalse() {
+        SudokuBoard board = new SudokuBoard();
+
+        int[][] blankBoard = new int[9][9];
+
+        blankBoard[0] = new int[] {8, 2, 7, 0, 5, 4, 3, 9, 6};
+        blankBoard[1] = new int[] {9, 6, 5, 3, 2, 7, 1, 0, 8};
+        blankBoard[2] = new int[] {0, 4, 1, 6, 8, 9, 7, 5, 2};
+
+        blankBoard[3] = new int[] {5, 9, 3, 4, 6, 8, 2, 0, 1};
+        blankBoard[4] = new int[] {4, 7, 0, 0, 1, 3, 6, 8, 9};
+        blankBoard[5] = new int[] {6, 1, 8, 9, 7, 2, 4, 3, 5};
+
+        blankBoard[6] = new int[] {7, 0, 6, 2, 3, 5, 9, 1, 4};
+        blankBoard[7] = new int[] {1, 5, 4, 7, 0, 6, 8, 2, 3};
+        blankBoard[8] = new int[] {2, 3, 9, 8, 4, 1, 5, 0, 7};
+
+        board.setBoard(blankBoard);
+
+        Assertions.assertFalse(board.numInBlock(1, 3));
+        Assertions.assertFalse(board.numInBlock(2, 1));
+        Assertions.assertFalse(board.numInBlock(3, 4));
+        Assertions.assertFalse(board.numInBlock(4, 2));
+        Assertions.assertFalse(board.numInBlock(5, 5));
+        Assertions.assertFalse(board.numInBlock(6, 7));
+        Assertions.assertFalse(board.numInBlock(7, 8));
+        Assertions.assertFalse(board.numInBlock(8, 9));
+        Assertions.assertFalse(board.numInBlock(9, 6));
+    }
+
 }
