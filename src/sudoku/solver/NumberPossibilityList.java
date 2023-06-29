@@ -49,4 +49,19 @@ public class NumberPossibilityList {
         }
         return false;
     }
+
+    public void clear() {
+        possibilities.clear();
+    }
+
+    @Override
+    public String toString() {
+        String result = "";
+
+        for (int i = 0; i < possibilities.size(); i++) {
+            result += possibilities.get(i).toString() + " ";
+        }
+
+        return result;
+    }
 }

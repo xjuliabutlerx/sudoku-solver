@@ -3,6 +3,8 @@ package sudoku.solver;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 class NumberPossibilityListTest {
 
     @Test
@@ -27,6 +29,25 @@ class NumberPossibilityListTest {
         Assertions.assertTrue(possibilityList.isNumPossible(7));
         Assertions.assertTrue(possibilityList.isNumPossible(8));
         Assertions.assertTrue(possibilityList.isNumPossible(9));
+    }
+
+    @Test
+    void clearPossibilitiesList() {
+        NumberPossibilityList possibilityList = new NumberPossibilityList();
+
+        Assertions.assertTrue(possibilityList.isNumPossible(1));
+        Assertions.assertTrue(possibilityList.isNumPossible(2));
+        Assertions.assertTrue(possibilityList.isNumPossible(3));
+        Assertions.assertTrue(possibilityList.isNumPossible(4));
+        Assertions.assertTrue(possibilityList.isNumPossible(5));
+        Assertions.assertTrue(possibilityList.isNumPossible(6));
+        Assertions.assertTrue(possibilityList.isNumPossible(7));
+        Assertions.assertTrue(possibilityList.isNumPossible(8));
+        Assertions.assertTrue(possibilityList.isNumPossible(9));
+
+        possibilityList.clear();
+
+        Assertions.assertArrayEquals(new int[]{}, possibilityList.getPossibilities());
     }
 
     @Test
@@ -110,6 +131,21 @@ class NumberPossibilityListTest {
 
         Assertions.assertTrue(possibilityList.onlyOneNumPossible());
         Assertions.assertEquals(6, possibilityList.getPossibilities()[0]);
+    }
+
+    @Test
+    void stringOutput() {
+        NumberPossibilityList possibilityList = new NumberPossibilityList();
+        String expected = "1 2 3 4 5 6 7 8 9 ";
+
+        Assertions.assertEquals(expected, possibilityList.toString());
+
+        possibilityList.remove(3);
+        possibilityList.remove(8);
+
+        expected = "1 2 4 5 6 7 9 ";
+
+        Assertions.assertEquals(expected, possibilityList.toString());
     }
 
 }
