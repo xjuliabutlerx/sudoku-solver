@@ -1,13 +1,11 @@
-package sudoku.solver;
-
-import sudoku.exceptions.LogicException;
+package sudoku.boards;
 
 import java.util.ArrayList;
 
-public class NumberPossibilityList {
-    private ArrayList<Integer> possibilities = new ArrayList<Integer>(){};
+public class PossibilityList {
+    private final ArrayList<Integer> possibilities = new ArrayList<Integer>(){};
 
-    public NumberPossibilityList() {
+    public PossibilityList() {
         for (int i = 1; i < 10; i++) {
             possibilities.add(i);
         }

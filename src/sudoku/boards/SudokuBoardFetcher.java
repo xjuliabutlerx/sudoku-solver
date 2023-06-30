@@ -1,4 +1,4 @@
-package sudoku.board;
+package sudoku.boards;
 
 import java.net.URI;
 import java.net.http.HttpClient;

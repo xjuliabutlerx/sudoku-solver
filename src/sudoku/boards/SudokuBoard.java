@@ -1,12 +1,17 @@
-package sudoku.board;
+package sudoku.boards;
+
+import sudoku.boards.blocks.Blocks;
 
 public class SudokuBoard {
 
     private int[][] board;
     private int[][] solution;
     private String difficulty;
+    private Blocks blocks;
 
-    public SudokuBoard() {}
+    public SudokuBoard() {
+        blocks = Blocks.getBlocks();
+    }
 
     public boolean fetchBoard() {
         try {
@@ -64,65 +69,6 @@ public class SudokuBoard {
     }
 
     /**
-     * This method will take the cell's row and col and will return the id for the block the cell is in, as follows:
-     *
-     * Block 1 - Rows 0-2, Cols 0-2 (top left block)
-     * Block 2 - Rows 0-2, Cols 3-5
-     * Block 3 - Rows 0-2, Cols 6-8 (top right block)
-     * Block 4 - Rows 3-5, Cols 0-2
-     * Block 5 - Rows 3-5, Cols 3-5 (center block)
-     * Block 6 - Rows 3-5, Cols 6-8
-     * Block 7 - Rows 6-8, Cols 0-2 (bottom left block)
-     * Block 8 - Rows 6-8, Cols 3-5
-     * Block 9 - Rows 6-8, Cols 6-8 (bottom right block)
-     *
-     * @param row
-     * @param col
-     * @return blockId
-     */
-    public int getBlockId(int row, int col) {
-        if (row < 0 || row > 8 || col < 0 || col > 8) {
-            return 0;
-        }
-
-        // Rows 0-2
-        if (row >= 0 && row <= 2) {
-
-            if (col >= 0 && col <= 2) {
-                return 1;
-            } else if (col >= 3 && col <= 5) {
-                return 2;
-            } else if (col >= 6 && col <= 8) {
-                return 3;
-            }
-
-        // Rows 3-5
-        } else if (3 <= row && row <= 5) {
-
-            if (col >= 0 && col <= 2) {
-                return 4;
-            } else if (col >= 3 && col <= 5) {
-                return 5;
-            } else if (col >= 6 && col <= 8) {
-                return 6;
-            }
-
-        } else if (6 <= row && row <= 8) {
-
-            if (col >= 0 && col <= 2) {
-                return 7;
-            } else if (col >= 3 && col <= 5) {
-                return 8;
-            } else if (col >= 6 && col <= 8) {
-                return 9;
-            }
-
-        }
-
-        return 0;
-    }
-
-    /**
      * This method will return a particular row of the Sudoku board. The rows have ids from 0-8.
      * The top row is 0 and the bottom row is 8.
      *
@@ -160,73 +106,17 @@ public class SudokuBoard {
      *
      * @return a 3x3 list
      */
-    public int[][] getBlockById(int id) {
+    public int[][] getBlockById(int blockId) {
         int[][] block = new int[3][3];
 
-        int initRow = 0;
-        int finalRow = 0;
-        int initCol = 0;
-        int finalCol = 0;
-
-        // There are only 9 possible blocks
-        if (id < 1 || id > 9) {
-            return null;
+        if (!blocks.isValidBlockId(blockId)) {
+            return new int[][] {};
         }
 
-        /*
-        Depending on which block the algorithm is requesting, this method will set the
-        indices for the row and col accordingly.
-         */
-        switch(id) {
-            case 1:
-                finalRow = 2;
-                finalCol = 2;
-                break;
-            case 2:
-                finalRow = 2;
-                initCol = 3;
-                finalCol = 5;
-                break;
-            case 3:
-                finalRow = 2;
-                initCol = 6;
-                finalCol = 8;
-                break;
-            case 4:
-                initRow = 3;
-                finalRow = 5;
-                finalCol = 2;
-                break;
-            case 5:
-                initRow = 3;
-                finalRow = 5;
-                initCol = 3;
-                finalCol = 5;
-                break;
-            case 6:
-                initRow = 3;
-                finalRow = 5;
-                initCol = 6;
-                finalCol = 8;
-                break;
-            case 7:
-                initRow = 6;
-                finalRow = 8;
-                finalCol = 2;
-                break;
-            case 8:
-                initRow = 6;
-                finalRow = 8;
-                initCol = 3;
-                finalCol = 5;
-                break;
-            case 9:
-                initRow = 6;
-                finalRow = 8;
-                initCol = 6;
-                finalCol = 8;
-                break;
-        }
+        int initRow = blocks.getBlockIndices(blockId)[0];
+        int finalRow = blocks.getBlockIndices(blockId)[1];
+        int initCol = blocks.getBlockIndices(blockId)[2];
+        int finalCol = blocks.getBlockIndices(blockId)[3];
 
         int blockRow = 0;
         int blockCol = 0;
@@ -240,8 +130,6 @@ public class SudokuBoard {
             blockRow++;
             blockCol = 0;
         }
-
-        //System.out.println(deepToString(block));
 
         return block;
     }

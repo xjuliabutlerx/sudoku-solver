@@ -1,15 +1,13 @@
-package sudoku.solver;
+package sudoku.boards;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-
-class NumberPossibilityListTest {
+class PossibilityListTest {
 
     @Test
     void initializationCreatesArrayListOf9() {
-        NumberPossibilityList possibilityList = new NumberPossibilityList();
+        PossibilityList possibilityList = new PossibilityList();
         int[] expected = new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9};
 
         Assertions.assertArrayEquals(expected, possibilityList.getPossibilities());
@@ -18,7 +16,7 @@ class NumberPossibilityListTest {
 
     @Test
     void atInitAllNumsPossible() {
-        NumberPossibilityList possibilityList = new NumberPossibilityList();
+        PossibilityList possibilityList = new PossibilityList();
 
         Assertions.assertTrue(possibilityList.isNumPossible(1));
         Assertions.assertTrue(possibilityList.isNumPossible(2));
@@ -33,7 +31,7 @@ class NumberPossibilityListTest {
 
     @Test
     void clearPossibilitiesList() {
-        NumberPossibilityList possibilityList = new NumberPossibilityList();
+        PossibilityList possibilityList = new PossibilityList();
 
         Assertions.assertTrue(possibilityList.isNumPossible(1));
         Assertions.assertTrue(possibilityList.isNumPossible(2));
@@ -52,7 +50,7 @@ class NumberPossibilityListTest {
 
     @Test
     void removePossibility() {
-        NumberPossibilityList possibilityList = new NumberPossibilityList();
+        PossibilityList possibilityList = new PossibilityList();
 
         possibilityList.remove(1);
 
@@ -64,7 +62,7 @@ class NumberPossibilityListTest {
 
     @Test
     void removePossibilities() {
-        NumberPossibilityList possibilityList = new NumberPossibilityList();
+        PossibilityList possibilityList = new PossibilityList();
 
         possibilityList.remove(1);
 
@@ -86,7 +84,7 @@ class NumberPossibilityListTest {
 
     @Test
     void removePossibilitiesTwiceDoesNotThrowException() {
-        NumberPossibilityList possibilityList = new NumberPossibilityList();
+        PossibilityList possibilityList = new PossibilityList();
 
         possibilityList.remove(3);
         possibilityList.remove(8);
@@ -102,7 +100,7 @@ class NumberPossibilityListTest {
 
     @Test
     void oneNumPossibleFalse() {
-        NumberPossibilityList possibilityList = new NumberPossibilityList();
+        PossibilityList possibilityList = new PossibilityList();
 
         possibilityList.remove(2);
         possibilityList.remove(4);
@@ -118,7 +116,7 @@ class NumberPossibilityListTest {
 
     @Test
     void oneNumPossibleTrue() {
-        NumberPossibilityList possibilityList = new NumberPossibilityList();
+        PossibilityList possibilityList = new PossibilityList();
 
         possibilityList.remove(2);
         possibilityList.remove(4);
@@ -135,7 +133,7 @@ class NumberPossibilityListTest {
 
     @Test
     void stringOutput() {
-        NumberPossibilityList possibilityList = new NumberPossibilityList();
+        PossibilityList possibilityList = new PossibilityList();
         String expected = "1 2 3 4 5 6 7 8 9 ";
 
         Assertions.assertEquals(expected, possibilityList.toString());
