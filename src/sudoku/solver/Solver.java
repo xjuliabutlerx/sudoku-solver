@@ -146,9 +146,9 @@ public class Solver {
                             possibilitiesBoard.clearCellPossibilities((r + adj[0]), (c + adj[1]));
 
                             // Then remove this number from its row, col, and block's possibilities
-                            possibilitiesBoard.removeRowPossibility(auxBlock[(r + adj[0])][(c + adj[1])], (r + adj[0]));
-                            possibilitiesBoard.removeColPossibility(auxBlock[(r + adj[0])][(c + adj[1])], (c + adj[1]));
-                            possibilitiesBoard.removeBlockPossibility(auxBlock[(r + adj[0])][(c + adj[1])],
+                            possibilitiesBoard.removeRowPossibility(auxBlock[r][c], (r + adj[0]));
+                            possibilitiesBoard.removeColPossibility(auxBlock[r][c], (c + adj[1]));
+                            possibilitiesBoard.removeBlockPossibility(auxBlock[r][c],
                                     blocks.getBlockId((r + adj[0]), (c + adj[1])));
                         }
                     }
