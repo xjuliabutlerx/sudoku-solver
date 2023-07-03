@@ -6,15 +6,11 @@ import sudoku.boards.SudokuBoard;
 import sudoku.boards.blocks.Blocks;
 import sudoku.exceptions.LogicException;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
 public class Solver {
 
     private final SudokuBoard board;
-    private PossibilitiesBoard possibilitiesBoard;
-    private Blocks blocks;
+    private final PossibilitiesBoard possibilitiesBoard;
+    private final Blocks blocks;
 
     public Solver() {
         this.board = new SudokuBoard();
@@ -48,10 +44,10 @@ public class Solver {
             checkBlocks();
 
             processOfEliminationByCell();
+            analyzeRowPossibilities();
+            analyzeColPossibilities();
+            analyzeBlockPossibilities();
 
-            calcCellPossibilitiesByRow();
-            calcCellPossibilitiesByCol();
-            calcCellPossibilitiesByBlock();
             iters--;
 
             System.out.println("Iteration " + (100 - iters));
@@ -107,12 +103,10 @@ public class Solver {
         }
     }
 
-    // 1st horizontal block: Rows 0-2
-    // 2nd hor. block: Rows 3-5
-    // 3rd hor. block: Rows 6-8
-    // 1st vertical block: Cols 0-2
-    // 2nd vert. block: Cols 3-5
-    // 3rd vert. block: Cols 6-8
+    /**
+     * The checkBlocks method will see if there's one missing number from a 3 x 3 block. If there is, it will
+     * fill it in.
+     */
     public void checkBlocks() {
         NumberChecklist checklist = new NumberChecklist();
         int[][] auxBlock;
@@ -173,23 +167,19 @@ public class Solver {
 
                 // For each blank cell...
                 if (auxBoard[row][col] == 0) {
-                    PossibilityList possibilityList = new PossibilityList();
 
                     // Determine if numbers 1-9 are in the cell's respective row, col, or block
                     // If so, remove it from the possibilities list
                     for (int num = 1; num < 10; num++) {
                         if (board.numInRow(row, num) || board.numInCol(col, num) ||
                                 board.numInBlock(blocks.getBlockId(row, col), num)) {
-                            // TODO when possibilities board is implemented, delete
-                            possibilityList.remove(num);
 
                             possibilitiesBoard.removeCellPossibility(num, row, col);
                         }
                     }
 
-                    if (possibilityList.onlyOneNumPossible()) {
-                        board.writeNumber(possibilityList.getPossibilities()[0], row, col);
-                        //System.out.println(board.toString());
+                    if (possibilitiesBoard.getCellPossibility(row, col).length == 1) {
+                        board.writeNumber(possibilitiesBoard.getCellPossibility(row, col)[0], row, col);
 
                         possibilitiesBoard.clearCellPossibilities(row, col);
 
@@ -215,226 +205,165 @@ public class Solver {
         }
     }
 
-    // TODO with possibilitiesBoard in place, this may not be necessary anymore
-    public void calcCellPossibilitiesByRow() {
-        int[][] auxBoard = board.getBoard();
+    // TODO MERGE ROW AND COL ANALYSIS METHODS
+    /**
+     * analyzeRowPossibilities will use information from the entire Sudoku board and process of elimination to
+     * determine if it can write a number to the board in a row.
+     *
+     * The checkMissingOne method only uses information within the block.
+     */
+    public void analyzeRowPossibilities() {
+        // Iterate through all 9 rows
+        for (int rowId = 0; rowId < 9; rowId++) {
+            // Get the possibility list for the current row and create a frequency checklist
+            PossibilityList[] rowPoss = possibilitiesBoard.getRowPossibilities(rowId);
+            FrequencyChecklist numberFreq = new FrequencyChecklist();
 
-        // Iterate through each row...
-        for (int row = 0; row < 9; row++) {
-            // Create a list of 9 number possibility lists (1 for each cell in the row)
-            PossibilityList[] cellPossibilities =
-                    new PossibilityList[] {new PossibilityList(),
-                            new PossibilityList(),
-                            new PossibilityList(),
-                            new PossibilityList(),
-                            new PossibilityList(),
-                            new PossibilityList(),
-                            new PossibilityList(),
-                            new PossibilityList(),
-                            new PossibilityList()};
+            // Get the possibility lists for each cell in the row
+            for (int k = 0; k < rowPoss.length; k++) {
+                int[] cellPoss = rowPoss[k].getPossibilities();
 
-            // Determine which numbers could be in each blank cell
-            for (int col = 0; col < 9; col++) {
-                if (auxBoard[row][col] == 0) {
-                    for (int num = 1; num < 10; num++) {
-                        if(board.numInRow(row, num) || board.numInCol(col, num) ||
-                                board.numInBlock(blocks.getBlockId(row, col), num)) {
-                            cellPossibilities[col].remove(num);
+                // For each of the numbers possible for the cell, increment their frequencies
+                for (int r = 0; r < cellPoss.length; r++) {
+                    numberFreq.incrementFreq(cellPoss[r]);
+                }
+            }
+
+            // If there is a number that only appears once in the entire block's possibility lists, then that
+            // number must be the only one possible for the cell
+            if (numberFreq.freqIsOne()) {
+                // Get the number with a frequency of 1
+                int num = numberFreq.getNumWithFreqOfOne();
+
+                // Find where the number appears
+                for (int col = 0; col < 9; col++) {
+                    int[] cellPoss = rowPoss[col].getPossibilities();
+
+                    for (int k = 0; k < cellPoss.length; k++) {
+                        if (cellPoss[k] == num) {
+                            board.writeNumber(num, rowId, col);
+
+                            // If the cell is filled (doesn't contain 0), then clear that cell's possibilities
+                            possibilitiesBoard.clearCellPossibilities(rowId, col);
+
+                            possibilitiesBoard.removeRowPossibility(num, rowId);
+                            possibilitiesBoard.removeColPossibility(num, col);
+                            possibilitiesBoard.removeBlockPossibility(num,
+                                    blocks.getBlockId(rowId, col));
                         }
                     }
                 }
             }
-
-            // If a cellPossibilities unit has only 1 possible number, then write the number
-            // in the cell
-            for (int col = 0; col < 9; col++) {
-                if (cellPossibilities[col].getPossibilities().length == 1) {
-                    //System.out.println("Writing " + cellPossibilities[col].getPossibilities()[0] + " in " + row + ", " + col);
-                    board.writeNumber(cellPossibilities[col].getPossibilities()[0], row, col);
-
-                    // Clear that cell's possibilities
-                    possibilitiesBoard.clearCellPossibilities(row, col);
-
-                    // Then remove this number from its row, col, and block's possibilities
-                    possibilitiesBoard.removeRowPossibility(auxBoard[row][col], row);
-                    possibilitiesBoard.removeColPossibility(auxBoard[row][col], col);
-                    possibilitiesBoard.removeBlockPossibility(auxBoard[row][col],
-                            blocks.getBlockId(row, col));
-                }
-            }
-
         }
     }
 
-    // TODO with possibilitiesBoard in place, this may not be necessary anymore
-    public void calcCellPossibilitiesByCol() {
-        int[][] auxBoard = board.getBoardByCols();
+    /**
+     * analyzeColPossibilities will use information from the entire Sudoku board and process of elimination to
+     * determine if it can write a number to the board in a col.
+     *
+     * The checkMissingOne method only uses information within the block.
+     */
+    public void analyzeColPossibilities() {
+        // Iterate through all 9 rows
+        for (int colId = 0; colId < 9; colId++) {
+            // Get the possibility list for the current row and create a frequency checklist
+            PossibilityList[] colPoss = possibilitiesBoard.getColPossibilities(colId);
+            FrequencyChecklist numberFreq = new FrequencyChecklist();
 
-        // Iterate through each row...
-        for (int col = 0; col < 9; col++) {
-            // Create a list of 9 number possibility lists (1 for each cell in the row)
-            PossibilityList[] cellPossibilities =
-                    new PossibilityList[] {new PossibilityList(),
-                            new PossibilityList(),
-                            new PossibilityList(),
-                            new PossibilityList(),
-                            new PossibilityList(),
-                            new PossibilityList(),
-                            new PossibilityList(),
-                            new PossibilityList(),
-                            new PossibilityList()};
+            // Get the possibility lists for each cell in the row
+            for (int k = 0; k < colPoss.length; k++) {
+                int[] cellPoss = colPoss[k].getPossibilities();
 
-            // Determine which numbers could be in each blank cell
-            for (int row = 0; row < 9; row++) {
-                if (auxBoard[col][row] == 0) {
-                    for (int num = 1; num < 10; num++) {
-                        if(board.numInRow(row, num) || board.numInCol(col, num) ||
-                                board.numInBlock(blocks.getBlockId(row, col), num)) {
-                            cellPossibilities[row].remove(num);
+                // For each of the numbers possible for the cell, increment their frequencies
+                for (int r = 0; r < cellPoss.length; r++) {
+                    numberFreq.incrementFreq(cellPoss[r]);
+                }
+            }
+
+            // If there is a number that only appears once in the entire block's possibility lists, then that
+            // number must be the only one possible for the cell
+            if (numberFreq.freqIsOne()) {
+                // Get the number with a frequency of 1
+                int num = numberFreq.getNumWithFreqOfOne();
+
+                // Find where the number appears
+                for (int row = 0; row < 9; row++) {
+                    int[] cellPoss = colPoss[row].getPossibilities();
+
+                    for (int k = 0; k < cellPoss.length; k++) {
+                        if (cellPoss[k] == num) {
+                            board.writeNumber(num, row, colId);
+
+                            // If the cell is filled (doesn't contain 0), then clear that cell's possibilities
+                            possibilitiesBoard.clearCellPossibilities(row, colId);
+
+                            possibilitiesBoard.removeRowPossibility(num, row);
+                            possibilitiesBoard.removeColPossibility(num, colId);
+                            possibilitiesBoard.removeBlockPossibility(num,
+                                    blocks.getBlockId(row, colId));
                         }
                     }
                 }
             }
-
-            // If a cellPossibilities unit has only 1 possible number, then write the number
-            // in the cell
-            for (int row = 0; row < 9; row++) {
-                if (cellPossibilities[row].getPossibilities().length == 1) {
-                    //System.out.println("Writing " + cellPossibilities[col].getPossibilities()[0] + " in " + row + ", " + col);
-                    board.writeNumber(cellPossibilities[row].getPossibilities()[0], row, col);
-
-                    // Clear the cell of its possibilities
-                    possibilitiesBoard.clearCellPossibilities(row, col);
-
-                    // Then remove this number from its row, col, and block's possibilities
-                    possibilitiesBoard.removeRowPossibility(auxBoard[row][col], row);
-                    possibilitiesBoard.removeColPossibility(auxBoard[row][col], col);
-                    possibilitiesBoard.removeBlockPossibility(auxBoard[row][col],
-                            blocks.getBlockId(row, col));
-                }
-            }
-
         }
     }
 
-    // TODO with possibilitiesBoard in place, the second half of this method might not be necessary
-    public void calcCellPossibilitiesByBlock() {
-        int[][] auxBoard = board.getBoard();
-
+    /**
+     * analyzeBlockPossibilities will use information from the entire Sudoku board and process of elimination to
+     * determine if it can write a number to the board in a 3 x 3 block.
+     *
+     * The checkBlocks method only uses information within the block.
+     */
+    public void analyzeBlockPossibilities() {
+        // Iterate through all 9 blocks of the possibilities board
         for (int blockId = 1; blockId < 10; blockId++) {
-            int[][] auxBlock = board.getBlockById(blockId);
+            PossibilityList[][] blockPoss = possibilitiesBoard.getBlockPossibilities(blockId);
+            FrequencyChecklist numberFreq = new FrequencyChecklist();
 
-            PossibilityList[][] cellPossibilities = new PossibilityList[3][3];
-            cellPossibilities[0] = new PossibilityList[] {new PossibilityList(),
-                                                                new PossibilityList(),
-                                                                new PossibilityList()};
-            cellPossibilities[1] = new PossibilityList[] {new PossibilityList(),
-                                                                new PossibilityList(),
-                                                                new PossibilityList()};
-            cellPossibilities[2] = new PossibilityList[] {new PossibilityList(),
-                                                                new PossibilityList(),
-                                                                new PossibilityList()};
+            // Count the number of solved (empty) PossibilityLists and analyze which numbers are leftover
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    // If a cell is not solved, increment the number of iterations; ignore solved ones
+                    if (blockPoss[i][j].getPossibilities().length != 0) {
+                        int[] cellPoss = blockPoss[i][j].getPossibilities();
 
-            int[] adj = blocks.calculateIndexPadding(blockId);
-
-            // Determine what numbers are possible for a cell in a particular block
-            for (int r = 0; r < 3; r++) {
-                for (int c = 0; c < 3; c++) {
-                    if (auxBlock[r][c] == 0) {
-                        for (int num = 1; num < 10; num++) {
-                            if (board.numInRow(r + adj[0], num)) {
-                                possibilitiesBoard.removeCellPossibility(num, r + adj[0], c + adj[1]);
-                                for (int i = 0; i < 3; i++) {
-                                    // TODO delete after possibilitiesBoard implemented
-                                    cellPossibilities[r][i].remove(num);
-                                }
-                            }
-
-                            if (board.numInCol(c + adj[1], num)) {
-                                possibilitiesBoard.removeCellPossibility(num, r + adj[0], c + adj[1]);
-                                for (int i = 0; i < 3; i++) {
-                                    // TODO delete after possibilitiesBoard implemented
-                                    cellPossibilities[i][c].remove(num);
-                                }
-                            }
-
-                            if (board.numInBlock(blockId, num)) {
-                                possibilitiesBoard.removeCellPossibility(num, (r + adj[0]), (c + adj[1]));
-                                for (int i = 0; i < 3; i++) {
-                                    for (int j = 0; j < 3; j++) {
-                                        // TODO delete after possibilitiesBoard implemented
-                                        cellPossibilities[i][j].remove(num);
-                                    }
-                                }
-                            }
+                        for (int k = 0; k < cellPoss.length; k++) {
+                            numberFreq.incrementFreq(cellPoss[k]);
                         }
-                    } else {
-                        // TODO delete after possibilitiesBoard implemented
-                        cellPossibilities[r][c].clear();
 
-                        // TODO check to see if this is redundant
-                        // Clear the cell's possibilities
-                        possibilitiesBoard.clearCellPossibilities((r + adj[0]), (c + adj[1]));
-
-                        // Then remove this number from its row, col, and block's possibilities
-                        possibilitiesBoard.removeRowPossibility(auxBoard[(r + adj[0])][(c + adj[1])], (r + adj[0]));
-                        possibilitiesBoard.removeColPossibility(auxBoard[(r + adj[0])][(c + adj[1])], (c + adj[1]));
-                        possibilitiesBoard.removeBlockPossibility(auxBoard[(r + adj[0])][(c + adj[1])],
-                                blocks.getBlockId((r + adj[0]), (c + adj[1])));
                     }
                 }
             }
 
-            // TODO from this point on, see if the following functionality is necessary
-            // If there is a unique value out of all the 9 cellPossibilities, then
-            // write it in the cell
-            Set<Integer> blockPoss = new HashSet<Integer>();
-            ArrayList<Integer> toBeRemoved = new ArrayList<Integer>();
+            // If there is a number that only appears once in the entire block's possibility lists, then that
+            // number must be the only one possible for the cell
+            if (numberFreq.freqIsOne()) {
+                // Get the number with a frequency of 1
+                int num = numberFreq.getNumWithFreqOfOne();
+                int[] adj = blocks.calculateIndexPadding(blockId);
 
-            // Add each cell's possible numbers to a master set
-            for (int r = 0; r < 3; r++) {
-                for (int c = 0; c < 3; c++) {
-                    int[] currentNums = cellPossibilities[r][c].getPossibilities();
+                // Find where the number appears
+                for (int r = 0; r < 3; r++) {
+                    for (int c = 0; c < 3; c++) {
+                        int[] cellPoss = blockPoss[r][c].getPossibilities();
 
-                    for (int a = 0; a < currentNums.length; a++) {
-                        if (blockPoss.contains(currentNums[a])) {
-                            toBeRemoved.add(currentNums[a]);
-                        } else {
-                            blockPoss.add(currentNums[a]);
+                        for (int k = 0; k < cellPoss.length; k++) {
+                            if (cellPoss[k] == num) {
+                                board.writeNumber(num, r + adj[0], c + adj[1]);
+
+                                // If the cell is filled (doesn't contain 0), then clear that cell's possibilities
+                                possibilitiesBoard.clearCellPossibilities((r + adj[0]), (c + adj[1]));
+
+                                possibilitiesBoard.removeRowPossibility(num, (r + adj[0]));
+                                possibilitiesBoard.removeColPossibility(num, (c + adj[1]));
+                                possibilitiesBoard.removeBlockPossibility(num,
+                                        blocks.getBlockId((r + adj[0]), (c + adj[1])));
+                            }
                         }
                     }
                 }
             }
 
-            for (int a = 0; a < toBeRemoved.size(); a++) {
-                blockPoss.remove(toBeRemoved.get(a));
-            }
-
-            // If there's a unique element, then find which cell has it in its possibility
-            // list, and write it in the cell
-            if (blockPoss.size() == 1) {
-
-                // Get the remaining number as and integer
-                int num = (int) blockPoss.toArray()[0];
-                //System.out.println("Remaining Number: " + num);
-
-                for (int i = 0; i < 3; i++) {
-                    for (int j = 0; j < 3; j++) {
-                        if (cellPossibilities[i][j].isNumPossible(num)) {
-                            board.writeNumber(num, i + adj[0], j + adj[1]);
-
-                            // Clear the cell's possibilities
-                            possibilitiesBoard.clearCellPossibilities((i + adj[0]), (j + adj[1]));
-
-                            // Then remove this number from its row, col, and block's possibilities
-                            possibilitiesBoard.removeRowPossibility(auxBoard[(i + adj[0])][(j + adj[1])], (i + adj[0]));
-                            possibilitiesBoard.removeColPossibility(auxBoard[(i + adj[0])][(j + adj[1])], (j + adj[1]));
-                            possibilitiesBoard.removeBlockPossibility(auxBoard[(i + adj[0])][(j + adj[1])],
-                                    blocks.getBlockId((i + adj[0]), (j + adj[1])));
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -446,14 +375,14 @@ public class Solver {
             // Create a list of 9 number possibility lists (1 for each cell in the row)
             PossibilityList[] cellPossibilities =
                     new PossibilityList[] {new PossibilityList(),
-                                                 new PossibilityList(),
-                                                 new PossibilityList(),
-                                                 new PossibilityList(),
-                                                 new PossibilityList(),
-                                                 new PossibilityList(),
-                                                 new PossibilityList(),
-                                                 new PossibilityList(),
-                                                 new PossibilityList()};
+                            new PossibilityList(),
+                            new PossibilityList(),
+                            new PossibilityList(),
+                            new PossibilityList(),
+                            new PossibilityList(),
+                            new PossibilityList(),
+                            new PossibilityList(),
+                            new PossibilityList()};
 
             // Determine which numbers could be in each blank cell
             for (int j = 0; j < 9; j++) {
@@ -470,10 +399,6 @@ public class Solver {
             // If cellPossibilities has a number possibility list with only 3 numbers,
             // then
         }
-    }
-
-    public void sudokuForkBlock() {
-        int[][] auxBoard = board.getBoard();
     }
 
     /**

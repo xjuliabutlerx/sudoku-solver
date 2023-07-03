@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 class SolverTest {
 
     int[][] solution = new int[9][9];
@@ -198,127 +200,131 @@ class SolverTest {
     }
 
     @Test
-    void calcCellPossibilitiesByRowA() {
+    void analyzeRowPossibilitiesA() {
         int[][] blankBoard = new int[9][9];
 
-        blankBoard[0] = new int[] {8, 2, 7, 1, 5, 4, 3, 9, 6};
-        blankBoard[1] = new int[] {9, 6, 5, 3, 2, 7, 1, 4, 0};
-        blankBoard[2] = new int[] {3, 4, 1, 6, 8, 9, 7, 5, 2};
-        blankBoard[3] = new int[] {5, 9, 3, 4, 6, 0, 2, 7, 1};
-        blankBoard[4] = new int[] {4, 7, 2, 5, 1, 3, 6, 8, 9};
-        blankBoard[5] = new int[] {6, 1, 8, 9, 7, 2, 4, 3, 5};
-        blankBoard[6] = new int[] {7, 0, 6, 2, 3, 5, 9, 1, 4};
-        blankBoard[7] = new int[] {1, 5, 4, 7, 9, 6, 8, 2, 3};
-        blankBoard[8] = new int[] {2, 3, 9, 8, 4, 1, 5, 6, 7};
+        blankBoard[0] = new int[] {0, 0, 2, 8, 0, 0, 0, 1, 0};
+        blankBoard[1] = new int[] {0, 7, 4, 3, 0, 1, 0, 8, 0};
+        blankBoard[2] = new int[] {0, 0, 0, 0, 2, 4, 0, 0, 0};
+
+        blankBoard[3] = new int[] {6, 0, 0, 5, 0, 0, 9, 0, 0};
+        blankBoard[4] = new int[] {0, 0, 0, 0, 8, 0, 2, 0, 0};
+        blankBoard[5] = new int[] {0, 0, 0, 0, 0, 2, 0, 0, 5};
+
+        blankBoard[6] = new int[] {0, 0, 0, 7, 3, 0, 0, 0, 0};
+        blankBoard[7] = new int[] {0, 8, 0, 4, 0, 6, 7, 2, 0};
+        blankBoard[8] = new int[] {0, 4, 0, 0, 0, 8, 3, 0, 0};
 
         Solver solver = new Solver(blankBoard);
-        solver.calcCellPossibilitiesByRow();
+        solver.processOfEliminationByCell();
+        solver.analyzeRowPossibilities();
 
-        Assertions.assertArrayEquals(solution, solver.getBoard());
+        int[] solution = new int[] {0, 7, 4, 3, 0, 1, 0, 8, 2};
+
+        Assertions.assertArrayEquals(solution, solver.getBoard()[1]);
     }
 
     @Test
-    void calcCellPossibilitiesByRowB() {
+    void analyzeRowPossibilitiesB() {
         int[][] blankBoard = new int[9][9];
 
-        blankBoard[0] = new int[] {8, 2, 7, 1, 5, 4, 3, 9, 6};
-        blankBoard[1] = new int[] {9, 6, 5, 3, 2, 7, 1, 4, 8};
-        blankBoard[2] = new int[] {3, 4, 1, 6, 8, 9, 7, 5, 2};
-        blankBoard[3] = new int[] {5, 9, 3, 0, 0, 0, 2, 7, 1};
-        blankBoard[4] = new int[] {4, 7, 2, 0, 0, 0, 6, 8, 9};
-        blankBoard[5] = new int[] {6, 1, 8, 0, 0, 0, 4, 3, 5};
-        blankBoard[6] = new int[] {7, 8, 6, 2, 3, 5, 9, 1, 4};
-        blankBoard[7] = new int[] {1, 5, 4, 7, 9, 6, 8, 2, 3};
-        blankBoard[8] = new int[] {2, 3, 9, 8, 4, 1, 5, 6, 7};
+        blankBoard[0] = new int[] {5, 0, 2, 8, 0, 0, 0, 1, 0};
+        blankBoard[1] = new int[] {0, 7, 4, 3, 0, 1, 0, 8, 0};
+        blankBoard[2] = new int[] {0, 0, 0, 0, 2, 4, 5, 0, 0};
+
+        blankBoard[3] = new int[] {6, 0, 0, 5, 0, 0, 9, 0, 0};
+        blankBoard[4] = new int[] {0, 0, 0, 0, 8, 0, 2, 0, 0};
+        blankBoard[5] = new int[] {0, 0, 0, 0, 0, 2, 0, 0, 5};
+
+        blankBoard[6] = new int[] {0, 0, 0, 7, 3, 0, 0, 0, 0};
+        blankBoard[7] = new int[] {0, 8, 0, 4, 0, 6, 7, 2, 0};
+        blankBoard[8] = new int[] {0, 4, 0, 0, 0, 8, 3, 0, 0};
 
         Solver solver = new Solver(blankBoard);
-        solver.calcCellPossibilitiesByRow();
+        solver.processOfEliminationByCell();
+        solver.analyzeRowPossibilities();
+        solver.analyzeRowPossibilities();
 
-        Assertions.assertArrayEquals(solution, solver.getBoard());
+        int[] solution = new int[] {9, 7, 4, 3, 5, 1, 6, 8, 2};
+
+        Assertions.assertArrayEquals(solution, solver.getBoard()[1]);
     }
 
     @Test
-    void calcCellPossibilitiesByRowC() {
+    void analyzeColPossibilitiesA() {
         int[][] blankBoard = new int[9][9];
 
-        blankBoard[0] = new int[] {8, 2, 7, 1, 0, 4, 3, 9, 6};
-        blankBoard[1] = new int[] {9, 6, 5, 3, 0, 7, 1, 4, 8};
-        blankBoard[2] = new int[] {3, 4, 1, 6, 0, 9, 7, 5, 2};
-        blankBoard[3] = new int[] {5, 9, 3, 4, 0, 8, 2, 7, 1};
-        blankBoard[4] = new int[] {0, 0, 0, 0, 1, 0, 0, 0, 0};
-        blankBoard[5] = new int[] {6, 1, 8, 9, 0, 2, 4, 3, 5};
-        blankBoard[6] = new int[] {7, 8, 6, 2, 0, 5, 9, 1, 4};
-        blankBoard[7] = new int[] {1, 5, 4, 7, 0, 6, 8, 2, 3};
-        blankBoard[8] = new int[] {2, 3, 0, 8, 0, 1, 5, 6, 7};
+        blankBoard[0] = new int[] {0, 0, 2, 8, 0, 0, 0, 1, 0};
+        blankBoard[1] = new int[] {0, 7, 4, 3, 0, 1, 0, 8, 0};
+        blankBoard[2] = new int[] {0, 0, 0, 0, 2, 4, 0, 0, 0};
+
+        blankBoard[3] = new int[] {6, 0, 0, 5, 0, 0, 9, 0, 0};
+        blankBoard[4] = new int[] {0, 0, 0, 0, 8, 0, 0, 0, 0};
+        blankBoard[5] = new int[] {0, 0, 8, 0, 0, 2, 1, 0, 5};
+
+        blankBoard[6] = new int[] {0, 0, 0, 7, 3, 0, 0, 0, 0};
+        blankBoard[7] = new int[] {0, 8, 0, 4, 0, 6, 7, 2, 0};
+        blankBoard[8] = new int[] {1, 4, 0, 0, 0, 8, 3, 0, 0};
 
         Solver solver = new Solver(blankBoard);
-        solver.calcCellPossibilitiesByRow();
+        solver.processOfEliminationByCell();
+        solver.analyzeColPossibilities();
 
-        Assertions.assertArrayEquals(solution, solver.getBoard());
+        // Col 3
+        int[] solution = new int[] {8, 3, 0, 5, 1, 0, 7, 4, 0};
+
+        int[] col3 = new int[9];
+
+        for (int r = 0; r < 9; r++) {
+            for (int c = 0; c < 9; c++) {
+                if (c == 3) {
+                    col3[r] = solver.getBoard()[r][c];
+                }
+            }
+        }
+
+        Assertions.assertArrayEquals(solution, col3);
     }
 
     @Test
-    void calcCellPossibilitiesByColA() {
+    void analyzeColPossibilitiesB() {
         int[][] blankBoard = new int[9][9];
 
-        blankBoard[0] = new int[] {8, 2, 7, 1, 5, 4, 3, 9, 6};
-        blankBoard[1] = new int[] {9, 6, 5, 3, 2, 7, 1, 4, 0};
-        blankBoard[2] = new int[] {3, 4, 1, 6, 8, 9, 7, 5, 2};
-        blankBoard[3] = new int[] {5, 9, 3, 4, 6, 0, 2, 7, 1};
-        blankBoard[4] = new int[] {4, 7, 2, 5, 1, 3, 6, 8, 9};
-        blankBoard[5] = new int[] {6, 1, 8, 9, 7, 2, 4, 3, 5};
-        blankBoard[6] = new int[] {7, 0, 6, 2, 3, 5, 9, 1, 4};
-        blankBoard[7] = new int[] {1, 5, 4, 7, 9, 6, 8, 2, 3};
-        blankBoard[8] = new int[] {2, 3, 9, 8, 4, 1, 5, 6, 7};
+        blankBoard[0] = new int[] {0, 0, 2, 8, 0, 0, 0, 1, 0};
+        blankBoard[1] = new int[] {0, 7, 4, 3, 0, 1, 0, 8, 0};
+        blankBoard[2] = new int[] {0, 0, 0, 0, 2, 4, 0, 0, 0};
+
+        blankBoard[3] = new int[] {6, 0, 0, 5, 0, 0, 9, 0, 0};
+        blankBoard[4] = new int[] {0, 0, 0, 0, 8, 0, 0, 0, 0};
+        blankBoard[5] = new int[] {0, 0, 8, 0, 0, 2, 1, 0, 5};
+
+        blankBoard[6] = new int[] {0, 0, 0, 7, 3, 0, 0, 0, 0};
+        blankBoard[7] = new int[] {0, 8, 0, 4, 0, 6, 7, 2, 0};
+        blankBoard[8] = new int[] {1, 4, 0, 0, 0, 8, 3, 0, 0};
 
         Solver solver = new Solver(blankBoard);
-        solver.calcCellPossibilitiesByCol();
+        solver.processOfEliminationByCell();
+        solver.analyzeColPossibilities();
+        solver.analyzeColPossibilities();
 
-        Assertions.assertArrayEquals(solution, solver.getBoard());
+        // Col 3
+        int[] solution = new int[] {8, 3, 0, 5, 1, 0, 7, 4, 2};
+
+        int[] col3 = new int[9];
+
+        for (int r = 0; r < 9; r++) {
+            for (int c = 0; c < 9; c++) {
+                if (c == 3) {
+                    col3[r] = solver.getBoard()[r][c];
+                }
+            }
+        }
+
+        Assertions.assertArrayEquals(solution, col3);
     }
 
     @Test
-    void calcCellPossibilitiesByColB() {
-        int[][] blankBoard = new int[9][9];
-
-        blankBoard[0] = new int[] {8, 2, 7, 1, 5, 4, 3, 9, 6};
-        blankBoard[1] = new int[] {9, 6, 5, 3, 2, 7, 1, 4, 8};
-        blankBoard[2] = new int[] {3, 4, 1, 6, 8, 9, 7, 5, 2};
-        blankBoard[3] = new int[] {5, 9, 3, 0, 0, 0, 2, 7, 1};
-        blankBoard[4] = new int[] {4, 7, 2, 0, 0, 0, 6, 8, 9};
-        blankBoard[5] = new int[] {6, 1, 8, 0, 0, 0, 4, 3, 5};
-        blankBoard[6] = new int[] {7, 8, 6, 2, 3, 5, 9, 1, 4};
-        blankBoard[7] = new int[] {1, 5, 4, 7, 9, 6, 8, 2, 3};
-        blankBoard[8] = new int[] {2, 3, 9, 8, 4, 1, 5, 6, 7};
-
-        Solver solver = new Solver(blankBoard);
-        solver.calcCellPossibilitiesByCol();
-
-        Assertions.assertArrayEquals(solution, solver.getBoard());
-    }
-
-    @Test
-    void calcCellPossibilitiesByColC() {
-        int[][] blankBoard = new int[9][9];
-
-        blankBoard[0] = new int[] {8, 2, 7, 1, 0, 4, 3, 9, 6};
-        blankBoard[1] = new int[] {9, 6, 5, 3, 0, 7, 1, 4, 8};
-        blankBoard[2] = new int[] {3, 4, 1, 6, 0, 9, 7, 5, 2};
-        blankBoard[3] = new int[] {5, 9, 3, 4, 0, 8, 2, 7, 1};
-        blankBoard[4] = new int[] {0, 0, 0, 0, 1, 0, 0, 0, 0};
-        blankBoard[5] = new int[] {6, 1, 8, 9, 0, 2, 4, 3, 5};
-        blankBoard[6] = new int[] {7, 8, 6, 2, 0, 5, 9, 1, 4};
-        blankBoard[7] = new int[] {1, 5, 4, 7, 0, 6, 8, 2, 3};
-        blankBoard[8] = new int[] {2, 3, 0, 8, 0, 1, 5, 6, 7};
-
-        Solver solver = new Solver(blankBoard);
-        solver.calcCellPossibilitiesByCol();
-
-        Assertions.assertArrayEquals(solution, solver.getBoard());
-    }
-
-    @Test
-    void calcCellPossibilitiesByBlock() {
+    void analyzeBlockPossibilitiesA() {
         int[][] blankBoard = new int[9][9];
 
         blankBoard[0] = new int[] {0, 0, 2, 8, 0, 0, 0, 1, 0};
@@ -334,9 +340,62 @@ class SolverTest {
         blankBoard[8] = new int[] {0, 4, 0, 0, 0, 8, 3, 0, 0};
 
         Solver solver = new Solver(blankBoard);
-        solver.calcCellPossibilitiesByBlock();
+        solver.processOfEliminationByCell();
+        solver.analyzeBlockPossibilities();
 
-        Assertions.assertEquals(8, solver.getBoard()[2][0]);
+        int[][] block1sol = new int[3][3];
+
+        block1sol[0] = new int[] {0, 0, 2};
+        block1sol[1] = new int[] {0, 7, 4};
+        block1sol[2] = new int[] {8, 0, 0};
+
+        int[][] results = new int[3][3];
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                results[i][j] = solver.getBoard()[i][j];
+            }
+        }
+
+        Assertions.assertArrayEquals(block1sol, results);
+    }
+
+    @Test
+    void analyzeBlockPossibilitiesB() {
+        int[][] blankBoard = new int[9][9];
+
+        blankBoard[0] = new int[] {0, 0, 2, 8, 0, 0, 0, 1, 0};
+        blankBoard[1] = new int[] {0, 7, 4, 3, 0, 1, 0, 8, 0};
+        blankBoard[2] = new int[] {0, 0, 0, 0, 2, 4, 0, 0, 0};
+
+        blankBoard[3] = new int[] {6, 0, 1, 5, 0, 0, 9, 0, 0};
+        blankBoard[4] = new int[] {0, 0, 0, 0, 8, 0, 0, 0, 0};
+        blankBoard[5] = new int[] {0, 0, 8, 0, 0, 2, 0, 0, 5};
+
+        blankBoard[6] = new int[] {0, 0, 0, 7, 3, 0, 0, 0, 0};
+        blankBoard[7] = new int[] {0, 8, 0, 4, 0, 6, 7, 2, 0};
+        blankBoard[8] = new int[] {1, 4, 0, 0, 0, 8, 3, 0, 0};
+
+        Solver solver = new Solver(blankBoard);
+        solver.processOfEliminationByCell();
+        solver.analyzeBlockPossibilities();
+        solver.analyzeBlockPossibilities();
+
+        int[][] block1sol = new int[3][3];
+
+        block1sol[0] = new int[] {0, 0, 2};
+        block1sol[1] = new int[] {0, 7, 4};
+        block1sol[2] = new int[] {8, 1, 0};
+
+        int[][] results = new int[3][3];
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                results[i][j] = solver.getBoard()[i][j];
+            }
+        }
+
+        Assertions.assertArrayEquals(block1sol, results);
     }
 
     @Test

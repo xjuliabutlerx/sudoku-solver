@@ -588,4 +588,69 @@ class SudokuBoardTest {
         Assertions.assertFalse(board.numInBlock(9, 6));
     }
 
+    @Test
+    void twoBoardsEqualTrue() {
+        SudokuBoard boardA = new SudokuBoard();
+        SudokuBoard boardB = new SudokuBoard();
+
+        int[][] blankBoard = new int[9][9];
+
+        blankBoard[0] = new int[] {8, 2, 7, 0, 5, 4, 3, 9, 6};
+        blankBoard[1] = new int[] {9, 6, 5, 3, 2, 7, 1, 0, 8};
+        blankBoard[2] = new int[] {0, 4, 1, 6, 8, 9, 7, 5, 2};
+
+        blankBoard[3] = new int[] {5, 9, 3, 4, 6, 8, 2, 0, 1};
+        blankBoard[4] = new int[] {4, 7, 0, 0, 1, 3, 6, 8, 9};
+        blankBoard[5] = new int[] {6, 1, 8, 9, 7, 2, 4, 3, 5};
+
+        blankBoard[6] = new int[] {7, 0, 6, 2, 3, 5, 9, 1, 4};
+        blankBoard[7] = new int[] {1, 5, 4, 7, 0, 6, 8, 2, 3};
+        blankBoard[8] = new int[] {2, 3, 9, 8, 4, 1, 5, 0, 7};
+
+        boardA.setBoard(blankBoard);
+        boardB.setBoard(blankBoard);
+
+        Assertions.assertTrue(boardA.equals(boardB));
+    }
+
+    @Test
+    void twoBoardsEqualFalse() {
+        SudokuBoard boardA = new SudokuBoard();
+        SudokuBoard boardB = new SudokuBoard();
+
+        int[][] blankBoardA = new int[9][9];
+
+        blankBoardA[0] = new int[] {8, 2, 7, 0, 5, 4, 3, 9, 6};
+        blankBoardA[1] = new int[] {9, 6, 5, 3, 2, 7, 1, 0, 8};
+        blankBoardA[2] = new int[] {0, 4, 1, 6, 8, 9, 7, 5, 2};
+
+        blankBoardA[3] = new int[] {5, 9, 3, 4, 6, 8, 2, 0, 1};
+        blankBoardA[4] = new int[] {4, 7, 0, 0, 1, 3, 6, 8, 9};
+        blankBoardA[5] = new int[] {6, 1, 8, 9, 7, 2, 4, 3, 5};
+
+        blankBoardA[6] = new int[] {7, 0, 6, 2, 3, 5, 9, 1, 4};
+        blankBoardA[7] = new int[] {1, 5, 4, 7, 0, 6, 8, 2, 3};
+        blankBoardA[8] = new int[] {2, 3, 9, 8, 4, 1, 5, 0, 7};
+
+        int[][] blankBoardB = new int[9][9];
+
+        blankBoardB[0] = new int[] {8, 2, 7, 0, 5, 4, 3, 9, 6};
+        blankBoardB[1] = new int[] {9, 6, 5, 3, 2, 7, 1, 0, 8};
+        blankBoardB[2] = new int[] {0, 4, 1, 6, 8, 9, 7, 5, 2};
+
+        blankBoardB[3] = new int[] {5, 9, 3, 4, 6, 8, 2, 0, 1};
+        blankBoardB[4] = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0};
+        blankBoardB[5] = new int[] {6, 1, 8, 9, 7, 2, 4, 3, 5};
+
+        blankBoardB[6] = new int[] {7, 0, 6, 2, 3, 5, 9, 1, 4};
+        blankBoardB[7] = new int[] {1, 5, 4, 7, 0, 6, 8, 2, 3};
+        blankBoardB[8] = new int[] {2, 3, 9, 8, 4, 1, 5, 0, 7};
+
+        boardA.setBoard(blankBoardA);
+
+        boardB.setBoard(blankBoardB);
+
+        Assertions.assertFalse(boardA.equals(boardB));
+    }
+
 }

@@ -226,4 +226,21 @@ public class SudokuBoard {
         return output;
     }
 
+    /**
+     * Determines if two Sudoku Boards are the same or not
+     *
+     * @param otherBoard (another Sudoku board)
+     * @return true or false
+     */
+    public boolean equals(SudokuBoard otherBoard) {
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                if (this.getCell(row, col) != otherBoard.getCell(row, col)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
 }
