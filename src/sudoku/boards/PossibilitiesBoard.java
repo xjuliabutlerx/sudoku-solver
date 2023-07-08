@@ -84,6 +84,28 @@ public class PossibilitiesBoard {
         return blockPossibilities;
     }
 
+    // TODO test
+    public PossibilityList[] getBlockPossibilitiesAsArray(int blockId) {
+        PossibilityList[] blockPossibilities = new PossibilityList[9];
+
+        int initRow = blocks.getBlockIndices(blockId)[0];
+        int finalRow = blocks.getBlockIndices(blockId)[1];
+        int initCol = blocks.getBlockIndices(blockId)[2];
+        int finalCol = blocks.getBlockIndices(blockId)[3];
+
+        int index = 0;
+
+        for (int r = initRow; r <= finalRow; r++) {
+            for (int c = initCol; c <= finalCol; c++) {
+                blockPossibilities[index] = possibilitiesBoard[r][c];
+                index++;
+            }
+        }
+
+        //System.out.println("The flattened block array: " + Arrays.toString(blockArray));
+        return blockPossibilities;
+    }
+
     /**
      * This method removes all numbers from the list of possible numbers for a cell. This usually
      * means that the cell's number was given or solved.
@@ -151,6 +173,10 @@ public class PossibilitiesBoard {
 
     public String printCellPossibilities(int rowId, int colId) {
         return Arrays.toString(getCellPossibility(rowId, colId));
+    }
+
+    public void printRowPossibility(int rowId) {
+        System.out.println("Row " + rowId + ": " + Arrays.toString(getRowPossibilities(rowId)));
     }
 
     @Override

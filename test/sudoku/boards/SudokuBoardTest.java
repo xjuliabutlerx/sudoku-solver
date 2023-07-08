@@ -413,6 +413,60 @@ class SudokuBoardTest {
     }
 
     @Test
+    void getFlattenedBlock() {
+        SudokuBoard board = new SudokuBoard();
+
+        int[][] blankBoard = new int[9][9];
+
+        blankBoard[0] = new int[] {8, 2, 7, 1, 5, 4, 3, 9, 6};
+        blankBoard[1] = new int[] {9, 6, 5, 3, 2, 7, 1, 4, 8};
+        blankBoard[2] = new int[] {3, 4, 1, 6, 8, 9, 7, 5, 2};
+
+        blankBoard[3] = new int[] {5, 9, 3, 4, 6, 8, 2, 7, 1};
+        blankBoard[4] = new int[] {4, 7, 2, 5, 1, 3, 6, 8, 9};
+        blankBoard[5] = new int[] {6, 1, 8, 9, 7, 2, 4, 3, 5};
+
+        blankBoard[6] = new int[] {7, 8, 6, 2, 3, 5, 9, 1, 4};
+        blankBoard[7] = new int[] {1, 5, 4, 7, 9, 6, 8, 2, 3};
+        blankBoard[8] = new int[] {2, 3, 9, 8, 4, 1, 5, 6, 7};
+
+        board.setBoard(blankBoard);
+
+        Assertions.assertArrayEquals(new int[] {8, 2, 7, 9, 6, 5, 3, 4, 1}, board.getBlockAsArrayById(1));
+        Assertions.assertArrayEquals(new int[] {1, 5, 4, 3, 2, 7, 6, 8, 9}, board.getBlockAsArrayById(2));
+        Assertions.assertArrayEquals(new int[] {3, 9, 6, 1, 4, 8, 7, 5, 2}, board.getBlockAsArrayById(3));
+        Assertions.assertArrayEquals(new int[] {5, 9, 3, 4, 7, 2, 6, 1, 8}, board.getBlockAsArrayById(4));
+        Assertions.assertArrayEquals(new int[] {4, 6, 8, 5, 1, 3, 9, 7, 2}, board.getBlockAsArrayById(5));
+        Assertions.assertArrayEquals(new int[] {2, 7, 1, 6, 8, 9, 4, 3, 5}, board.getBlockAsArrayById(6));
+        Assertions.assertArrayEquals(new int[] {7, 8, 6, 1, 5, 4, 2, 3, 9}, board.getBlockAsArrayById(7));
+        Assertions.assertArrayEquals(new int[] {2, 3, 5, 7, 9, 6, 8, 4, 1}, board.getBlockAsArrayById(8));
+        Assertions.assertArrayEquals(new int[] {9, 1, 4, 8, 2, 3, 5, 6, 7}, board.getBlockAsArrayById(9));
+    }
+
+    @Test
+    void getInvalidFlattenedBlock() {
+        SudokuBoard board = new SudokuBoard();
+
+        int[][] blankBoard = new int[9][9];
+
+        blankBoard[0] = new int[] {8, 2, 7, 1, 5, 4, 3, 9, 6};
+        blankBoard[1] = new int[] {9, 6, 5, 3, 2, 7, 1, 4, 8};
+        blankBoard[2] = new int[] {3, 4, 1, 6, 8, 9, 7, 5, 2};
+        blankBoard[3] = new int[] {5, 9, 3, 4, 6, 8, 2, 7, 1};
+        blankBoard[4] = new int[] {4, 7, 2, 5, 1, 3, 6, 8, 9};
+        blankBoard[5] = new int[] {6, 1, 8, 9, 7, 2, 4, 3, 5};
+        blankBoard[6] = new int[] {7, 8, 6, 2, 3, 5, 9, 1, 4};
+        blankBoard[7] = new int[] {1, 5, 4, 7, 9, 6, 8, 2, 3};
+        blankBoard[8] = new int[] {2, 3, 9, 8, 4, 1, 5, 6, 7};
+
+        board.setBoard(blankBoard);
+
+        Assertions.assertArrayEquals(new int[] {}, board.getBlockAsArrayById(0));
+        Assertions.assertArrayEquals(new int[] {}, board.getBlockAsArrayById(10));
+        Assertions.assertArrayEquals(new int[] {}, board.getBlockAsArrayById(-10));
+    }
+
+    @Test
     void isNumInRowTrue() {
         SudokuBoard board = new SudokuBoard();
 

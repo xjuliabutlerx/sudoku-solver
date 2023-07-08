@@ -134,6 +134,33 @@ public class SudokuBoard {
         return block;
     }
 
+    public int[] getBlockAsArrayById(int blockId) {
+        int[] blockArray = new int[9];
+
+        if (!blocks.isValidBlockId(blockId)) {
+            return new int[] {};
+        }
+
+        int initRow = blocks.getBlockIndices(blockId)[0];
+        int finalRow = blocks.getBlockIndices(blockId)[1];
+        int initCol = blocks.getBlockIndices(blockId)[2];
+        int finalCol = blocks.getBlockIndices(blockId)[3];
+
+        int index = 0;
+
+        // The numbers from that block are copied into a 2D list
+        for (int r = initRow; r <= finalRow; r++) {
+            for (int c = initCol; c <= finalCol; c++) {
+                //System.out.println("Adding " + board[r][c] + " to block at index " + index);
+                blockArray[index] = board[r][c];
+                index++;
+            }
+        }
+
+        //System.out.println("The flattened block array: " + Arrays.toString(blockArray));
+        return blockArray;
+    }
+
     /**
      * numInRow indicates if a particular number is in a specified row
      *

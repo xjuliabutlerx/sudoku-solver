@@ -1,7 +1,5 @@
 package sudoku.solver;
 
-import sudoku.exceptions.LogicException;
-
 /**
  * @author juliabutler
  *
